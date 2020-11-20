@@ -2,8 +2,8 @@
 
 namespace Spatie\Backtrace\Tests;
 
-use Spatie\Backtrace\Tests\Concerns\MatchesCodeSnippetSnapshots;
 use Spatie\Backtrace\Backtrace;
+use Spatie\Backtrace\Tests\Concerns\MatchesCodeSnippetSnapshots;
 use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 
 class BacktraceTest extends TestCase
