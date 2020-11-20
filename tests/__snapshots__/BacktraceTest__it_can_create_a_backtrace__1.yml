@@ -1,0 +1,6 @@
+line_number: 0
+method: create
+class: Spatie\Backtrace\Backtrace
+code_snippet: {  }
+file: ''
+is_application_frame: true

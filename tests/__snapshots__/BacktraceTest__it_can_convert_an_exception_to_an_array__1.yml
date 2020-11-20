@@ -1,0 +1,25 @@
+line_number: 13
+method: execute
+class: Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction
+code_snippet:
+    1: '<?php'
+    2: ''
+    3: 'namespace Spatie\Backtrace\Tests\TestClasses;'
+    4: ''
+    5: 'use Exception;'
+    6: 'use Throwable;'
+    7: ''
+    8: 'class ThrowAndReturnExceptionAction'
+    9: '{'
+    10: '    public function execute(): Throwable'
+    11: '    {'
+    12: '        try {'
+    13: '            throw new Exception();'
+    14: '        } catch (Exception $exception) {'
+    15: '            return $exception;'
+    16: '        }'
+    17: '    }'
+    18: '}'
+    19: ''
+file: /tests/TestClasses/ThrowAndReturnExceptionAction.php
+is_application_frame: true

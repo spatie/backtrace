@@ -9,7 +9,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/package-skeleton-php.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/package-skeleton-php)
+[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/backtrace.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/backtrace)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
