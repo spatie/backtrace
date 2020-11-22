@@ -31,16 +31,4 @@ class BacktraceTest extends TestCase
 
         $this->assertMatchesCodeSnippetSnapshot($backtrace[0]);
     }
-
-    /** @test */
-    public function it_can_detect_application_frames()
-    {
-        $applicationPath = '/Users/johndoe/Code/backtrace';
-
-        $backtrace = json_decode(file_get_contents(__DIR__.'/testFiles/backtrace.json'), true);
-
-        $backtrace = new Backtrace($backtrace, $applicationPath);
-
-        $this->assertSame(8, $backtrace->firstApplicationFrameIndex());
-    }
 }

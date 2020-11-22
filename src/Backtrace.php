@@ -7,13 +7,13 @@ use Throwable;
 class Backtrace
 {
     /** @var \Spatie\Backtrace\Frame[] */
-    protected $frames;
+    protected array $frames;
 
     protected ?string $applicationPath;
 
     public static function createForThrowable(Throwable $throwable, ?string $applicationPath = null): self
     {
-        return new static($throwable->getTrace(),  $applicationPath, $throwable->getFile(), $throwable->getLine());
+        return new static($throwable->getTrace(), $applicationPath, $throwable->getFile(), $throwable->getLine());
     }
 
     public static function create(?string $applicationPath = null): self
@@ -23,23 +23,26 @@ class Backtrace
         return new static($backtrace, $applicationPath);
     }
 
-    public function __construct(array $backtrace, ?string $applicationPath = null, string $topmostFile = null, string $topmostLine = null)
-    {
+    public function __construct(
+        array $backtrace,
+        ?string $applicationPath = null,
+        string $topmostFile = null,
+        string $topmostLine = null
+    ) {
         $this->applicationPath = $applicationPath;
 
         $currentFile = $topmostFile ?? '';
         $currentLine = $topmostLine ?? 0;
 
         foreach ($backtrace as $rawFrame) {
-            if (! $this->frameFromFlare($rawFrame) && ! $this->fileIgnored($currentFile)) {
-                $this->frames[] = new Frame(
-                    $currentFile,
-                    $currentLine,
-                    $rawFrame['function'] ?? null,
-                    $rawFrame['class'] ?? null,
-                    $this->frameFileFromApplication($currentFile)
-                );
-            }
+            $this->frames[] = new Frame(
+                $currentFile,
+                $currentLine,
+                $rawFrame['function'] ?? null,
+                $rawFrame['class'] ?? null,
+                $this->frameFileFromApplication($currentFile)
+            );
+
 
             $currentFile = $rawFrame['file'] ?? 'unknown';
             $currentLine = $rawFrame['line'] ?? 0;
@@ -50,11 +53,6 @@ class Backtrace
             $currentLine,
             '[top]'
         );
-    }
-
-    protected function frameFromFlare(array $rawFrame): bool
-    {
-        return isset($rawFrame['class']) && strpos($rawFrame['class'], 'Facade\\FlareClient\\') === 0;
     }
 
     protected function frameFileFromApplication(string $frameFilename): bool
@@ -72,54 +70,10 @@ class Backtrace
         return true;
     }
 
-    protected function fileIgnored(string $currentFile = ''): bool
-    {
-        $currentFile = str_replace('\\', DIRECTORY_SEPARATOR, $currentFile);
-
-        $ignoredFiles = [
-            '/ignition/src/helpers.php',
-        ];
-
-        foreach ($ignoredFiles as $ignoredFile) {
-            if (strstr($currentFile, $ignoredFile) !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function firstFrame(): Frame
-    {
-        return $this->frames[0];
-    }
-
     public function toArray(): array
     {
         return array_map(function (Frame $frame) {
             return $frame->toArray();
         }, $this->frames);
-    }
-
-    public function firstApplicationFrame(): ?Frame
-    {
-        foreach ($this->frames as $index => $frame) {
-            if ($frame->isApplicationFrame()) {
-                return $frame;
-            }
-        }
-
-        return null;
-    }
-
-    public function firstApplicationFrameIndex(): ?int
-    {
-        foreach ($this->frames as $index => $frame) {
-            if ($frame->isApplicationFrame()) {
-                return $index;
-            }
-        }
-
-        return null;
     }
 }

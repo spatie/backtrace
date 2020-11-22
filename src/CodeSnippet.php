@@ -4,7 +4,7 @@ namespace Spatie\Backtrace;
 
 use RuntimeException;
 
-class Codesnippet
+class CodeSnippet
 {
     protected int $surroundingLine = 1;
 
