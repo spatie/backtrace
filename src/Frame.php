@@ -8,11 +8,11 @@ class Frame
 
     public int $lineNumber;
 
+    public bool $isApplicationFrame;
+
     public ?string $method;
 
     public ?string $class;
-
-    public bool $isApplicationFrame;
 
     public function __construct(
         string $file,

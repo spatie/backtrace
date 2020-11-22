@@ -72,8 +72,6 @@ class Backtrace
 
     public function toArray(): array
     {
-        return array_map(function (Frame $frame) {
-            return $frame->toArray();
-        }, $this->frames);
+        return array_map(fn (Frame $frame) => $frame->toArray(), $this->frames);
     }
 }
