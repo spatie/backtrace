@@ -2,60 +2,142 @@
 
 namespace Spatie\Backtrace;
 
+use Closure;
 use Throwable;
 
 class Backtrace
 {
-    /** @var \Spatie\Backtrace\Frame[] */
-    protected array $frames;
+    protected bool $withArguments = false;
+
+    protected bool $withObject = false;
 
     protected ?string $applicationPath;
 
-    public static function createForThrowable(Throwable $throwable, ?string $applicationPath = null): self
+    protected int $offset = 0;
+
+    protected int $limit = PHP_INT_MAX;
+
+    protected ?Closure $startingFromFrameClosure = null;
+
+    protected ?Throwable $throwable = null;
+
+    public function create(): self
     {
-        return new static($throwable->getTrace(), $applicationPath, $throwable->getFile(), $throwable->getLine());
+        return new static();
     }
 
-    public static function create(?string $applicationPath = null): self
+    public function createForThrowable(Throwable $throwable): self
     {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS & ~DEBUG_BACKTRACE_PROVIDE_OBJECT);
-
-        return new static($backtrace, $applicationPath);
+        return (new static())->forThrowable($throwable);
     }
 
-    public function __construct(
-        array $backtrace,
-        ?string $applicationPath = null,
-        string $topmostFile = null,
-        string $topmostLine = null
-    ) {
+    protected function forThrowable(Throwable $throwable): self
+    {
+        $this->throwable = $throwable;
+
+        return $this;
+    }
+
+    public function withArguments(): self
+    {
+        $this->withArguments = true;
+
+        return $this;
+    }
+
+    public function withObject(): self
+    {
+        $this->withObject = true;
+
+        return $this;
+    }
+
+    public function applicationPath(string $applicationPath): self
+    {
         $this->applicationPath = $applicationPath;
 
-        $currentFile = $topmostFile ?? '';
-        $currentLine = $topmostLine ?? 0;
-
-        foreach ($backtrace as $rawFrame) {
-            $this->frames[] = new Frame(
-                $currentFile,
-                $currentLine,
-                $rawFrame['function'] ?? null,
-                $rawFrame['class'] ?? null,
-                $this->frameFileFromApplication($currentFile)
-            );
-
-
-            $currentFile = $rawFrame['file'] ?? 'unknown';
-            $currentLine = $rawFrame['line'] ?? 0;
-        }
-
-        $this->frames[] = new Frame(
-            $currentFile,
-            $currentLine,
-            '[top]'
-        );
+        return $this;
     }
 
-    protected function frameFileFromApplication(string $frameFilename): bool
+    public function offset(int $offset): self
+    {
+        $this->offset = $offset;
+
+        return $this;
+    }
+
+    public function limit(int $limit): self
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    public function startingFromFrame(Closure $startingFromFrameClosure)
+    {
+        $this->startingFromFrameClosure = $startingFromFrameClosure;
+
+        return $this;
+    }
+
+    public function frames(): array
+    {
+        $rawFrames = $this->getRawFrames();
+
+        return $this->toFrameObjects($rawFrames);
+    }
+
+    protected function getRawFrames(): array
+    {
+        if ($this->throwable) {
+            return $this->throwable->getTrace();
+        }
+
+        $options = null;
+
+        if (! $this->withArguments) {
+            $options = $options | DEBUG_BACKTRACE_IGNORE_ARGS;
+        }
+
+        if ($this->withObject()) {
+            $options = $options | DEBUG_BACKTRACE_PROVIDE_OBJECT;
+        }
+
+        return debug_backtrace($options, $this->limit);
+    }
+
+    protected function toFrameObjects(array $rawFrames): array
+    {
+        $currentFile = $this->throwable ? $this->throwable->getFile() : '';
+        $currentLine = $this->throwable ? $this->throwable->getLine() : 0;
+
+        $rawFrames = array_map(fn (array $rawFrame) => new Frame(
+            $currentFile,
+            $currentLine,
+            $rawFrame['args'] ?? [],
+            $rawFrame['function'] ?? null,
+            $rawFrame['class'] ?? null,
+            $this->isApplicationFrame($currentFile)
+        ), $rawFrames);
+
+        $rawFrames[] = new Frame(
+            $currentFile,
+            $currentLine,
+            [],
+            '[top]'
+        );
+
+
+        $rawFrames = array_slice($rawFrames, $this->offset, $this->limit, true);
+
+        if ($this->startingFromFrameClosure) {
+            // TODO: implement
+        }
+
+        return $rawFrames;
+    }
+
+    protected function isApplicationFrame(string $frameFilename): bool
     {
         $relativeFile = str_replace('\\', DIRECTORY_SEPARATOR, $frameFilename);
 
@@ -68,10 +150,5 @@ class Backtrace
         }
 
         return true;
-    }
-
-    public function toArray(): array
-    {
-        return array_map(fn (Frame $frame) => $frame->toArray(), $this->frames);
     }
 }

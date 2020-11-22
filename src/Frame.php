@@ -8,6 +8,8 @@ class Frame
 
     public int $lineNumber;
 
+    public array $arguments = [];
+
     public bool $isApplicationFrame;
 
     public ?string $method;
@@ -17,6 +19,7 @@ class Frame
     public function __construct(
         string $file,
         int $lineNumber,
+        array $arguments,
         string $method = null,
         string $class = null,
         bool $isApplicationFrame = false
@@ -24,6 +27,8 @@ class Frame
         $this->file = $file;
 
         $this->lineNumber = $lineNumber;
+
+        $this->arguments = $arguments;
 
         $this->method = $method;
 
