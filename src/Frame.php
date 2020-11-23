@@ -10,7 +10,7 @@ class Frame
 
     public ?array $arguments = null;
 
-    public bool $isApplicationFrame;
+    public bool $applicationFrame;
 
     public ?string $method;
 
@@ -34,7 +34,7 @@ class Frame
 
         $this->class = $class;
 
-        $this->isApplicationFrame = $isApplicationFrame;
+        $this->applicationFrame = $isApplicationFrame;
     }
 
     public function getSnippet(int $lineCount): array
