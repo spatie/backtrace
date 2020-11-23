@@ -95,7 +95,7 @@ class Backtrace
 
         $options = null;
 
-        if (!$this->withArguments) {
+        if (! $this->withArguments) {
             $options = $options | DEBUG_BACKTRACE_IGNORE_ARGS;
         }
 
@@ -148,7 +148,7 @@ class Backtrace
     {
         $relativeFile = str_replace('\\', DIRECTORY_SEPARATOR, $frameFilename);
 
-        if (!empty($this->applicationPath)) {
+        if (! empty($this->applicationPath)) {
             $relativeFile = array_reverse(explode($this->applicationPath ?? '', $frameFilename, 2))[0];
         }
 
@@ -162,7 +162,6 @@ class Backtrace
     protected function removeBacktracePackageFrames(array $frames): array
     {
         return $this->startAtFrameFromClosure($frames, function (Frame $frame) {
-
             return $frame->class !== static::class;
         });
     }
@@ -187,6 +186,4 @@ class Backtrace
 
         return $frames;
     }
-
-
 }

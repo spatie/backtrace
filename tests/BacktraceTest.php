@@ -3,8 +3,6 @@
 namespace Spatie\Backtrace\Tests;
 
 use Spatie\Backtrace\Backtrace;
-use Spatie\Backtrace\Tests\Concerns\MatchesCodeSnippetSnapshots;
-use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 
 class BacktraceTest extends TestCase
 {
@@ -18,7 +16,7 @@ class BacktraceTest extends TestCase
         /** @var \Spatie\Backtrace\Frame $firstFrame */
         $firstFrame = $frames[0];
 
-        $this->assertEquals( __LINE__ - 7, $firstFrame->lineNumber,);
+        $this->assertEquals(__LINE__ - 7, $firstFrame->lineNumber, );
         $this->assertEquals(__FILE__, $firstFrame->file);
         $this->assertEquals(static::class, $firstFrame->class);
         $this->assertEquals(explode('::', __METHOD__)[1], $firstFrame->method);
