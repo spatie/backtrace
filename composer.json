@@ -20,9 +20,10 @@
         "spatie/phpunit-snapshot-assertions": "^4.2"
     },
     "require-dev": {
+        "ext-json": "*",
         "phpunit/phpunit": "^9.3",
-        "vimeo/psalm": "^3.11",
-        "ext-json": "*"
+        "symfony/var-dumper": "^5.1",
+        "vimeo/psalm": "^3.11"
     },
     "autoload": {
         "psr-4": {

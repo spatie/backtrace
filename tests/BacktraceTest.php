@@ -8,27 +8,56 @@ use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 
 class BacktraceTest extends TestCase
 {
-    use MatchesCodeSnippetSnapshots;
-
-    /** @test */
-    public function it_can_convert_an_exception_to_an_array()
-    {
-        $exception = (new ThrowAndReturnExceptionAction())->execute();
-
-        $backtrace = Backtrace::createForThrowable($exception)->toArray();
-
-        $this->assertGreaterThan(1, count($backtrace));
-
-        $this->assertMatchesCodeSnippetSnapshot($backtrace[0]);
-    }
-
     /** @test */
     public function it_can_create_a_backtrace()
     {
-        $backtrace = Backtrace::create()->toArray();
+        $frames = Backtrace::create()->frames();
 
-        $this->assertGreaterThan(1, count($backtrace));
+        $this->assertGreaterThan(1, count($frames));
 
-        $this->assertMatchesCodeSnippetSnapshot($backtrace[0]);
+        /** @var \Spatie\Backtrace\Frame $firstFrame */
+        $firstFrame = $frames[0];
+
+        $this->assertEquals( __LINE__ - 7, $firstFrame->lineNumber,);
+        $this->assertEquals(__FILE__, $firstFrame->file);
+        $this->assertEquals(static::class, $firstFrame->class);
+        $this->assertEquals(explode('::', __METHOD__)[1], $firstFrame->method);
+    }
+
+    /** @test */
+    public function it_can_get_add_the_arguments()
+    {
+        /** @var \Spatie\Backtrace\Frame $firstFrame */
+        $firstFrame = Backtrace::create()->frames()[0];
+
+        $this->assertNull($firstFrame->arguments);
+
+        /** @var \Spatie\Backtrace\Frame $firstFrame */
+        $firstFrame = Backtrace::create()
+            ->withArguments()
+            ->frames()[0];
+
+        $this->assertIsArray($firstFrame->arguments);
+    }
+
+    /** @test */
+    public function it_can_get_the_snippet_around_the_frame()
+    {
+        /** @var \Spatie\Backtrace\Frame $firstFrame */
+        $firstFrame = Backtrace::create()->frames()[0];
+
+        $snippet = $firstFrame->getSnippet(5);
+
+        $this->assertStringContainsString('$firstFrame =', $snippet[__LINE__ - 4]);
+        $this->assertCount(5, $snippet);
+        $this->assertEquals(__LINE__ - 8, array_key_first($snippet));
+    }
+
+    /** @test */
+    public function it_can_limit_the_amount_of_frames()
+    {
+        $frames = Backtrace::create()->limit(5)->frames();
+
+        $this->assertCount(5, $frames);
     }
 }

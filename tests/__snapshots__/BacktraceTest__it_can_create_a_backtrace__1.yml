@@ -1,5 +1,0 @@
-line_number: 0
-method: create
-class: Spatie\Backtrace\Backtrace
-file: ''
-is_application_frame: true

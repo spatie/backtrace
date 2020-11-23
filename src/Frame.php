@@ -8,7 +8,7 @@ class Frame
 
     public int $lineNumber;
 
-    public array $arguments = [];
+    public ?array $arguments = null;
 
     public bool $isApplicationFrame;
 
@@ -19,7 +19,7 @@ class Frame
     public function __construct(
         string $file,
         int $lineNumber,
-        array $arguments,
+        ?array $arguments,
         string $method = null,
         string $class = null,
         bool $isApplicationFrame = false
@@ -35,17 +35,6 @@ class Frame
         $this->class = $class;
 
         $this->isApplicationFrame = $isApplicationFrame;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'line_number' => $this->lineNumber,
-            'method' => $this->method,
-            'class' => $this->class,
-            'file' => $this->file,
-            'is_application_frame' => $this->isApplicationFrame,
-        ];
     }
 
     public function getSnippet(int $lineCount): array

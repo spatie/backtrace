@@ -15,13 +15,13 @@ class Backtrace
 
     protected int $offset = 0;
 
-    protected int $limit = PHP_INT_MAX;
+    protected int $limit = 0;
 
     protected ?Closure $startingFromFrameClosure = null;
 
     protected ?Throwable $throwable = null;
 
-    public function create(): self
+    public static function create(): self
     {
         return new static();
     }
@@ -95,7 +95,7 @@ class Backtrace
 
         $options = null;
 
-        if (! $this->withArguments) {
+        if (!$this->withArguments) {
             $options = $options | DEBUG_BACKTRACE_IGNORE_ARGS;
         }
 
@@ -103,7 +103,7 @@ class Backtrace
             $options = $options | DEBUG_BACKTRACE_PROVIDE_OBJECT;
         }
 
-        return debug_backtrace($options, $this->limit);
+        return debug_backtrace($options, $this->limit + 3);
     }
 
     protected function toFrameObjects(array $rawFrames): array
@@ -111,37 +111,44 @@ class Backtrace
         $currentFile = $this->throwable ? $this->throwable->getFile() : '';
         $currentLine = $this->throwable ? $this->throwable->getLine() : 0;
 
-        $rawFrames = array_map(fn (array $rawFrame) => new Frame(
-            $currentFile,
-            $currentLine,
-            $rawFrame['args'] ?? [],
-            $rawFrame['function'] ?? null,
-            $rawFrame['class'] ?? null,
-            $this->isApplicationFrame($currentFile)
-        ), $rawFrames);
+        $frames = [];
 
-        $rawFrames[] = new Frame(
+        foreach ($rawFrames as $rawFrame) {
+            $frames[] = new Frame(
+                $currentFile,
+                $currentLine,
+                $rawFrame['args'] ?? null,
+                $rawFrame['function'] ?? null,
+                $rawFrame['class'] ?? null,
+                $this->isApplicationFrame($currentFile)
+            );
+
+            $currentFile = $rawFrame['file'] ?? 'unknown';
+            $currentLine = $rawFrame['line'] ?? 0;
+        }
+
+        $frames[] = new Frame(
             $currentFile,
             $currentLine,
             [],
             '[top]'
         );
 
+        $frames = $this->removeBacktracePackageFrames($frames);
 
-        $rawFrames = array_slice($rawFrames, $this->offset, $this->limit, true);
-
-        if ($this->startingFromFrameClosure) {
-            // TODO: implement
+        if ($closure = $this->startingFromFrameClosure) {
+            $frames = $this->startAtFrameFromClosure($frames, $closure);
         }
+        $frames = array_slice($frames, $this->offset, $this->limit === 0 ? PHP_INT_MAX : $this->limit);
 
-        return $rawFrames;
+        return array_values($frames);
     }
 
     protected function isApplicationFrame(string $frameFilename): bool
     {
         $relativeFile = str_replace('\\', DIRECTORY_SEPARATOR, $frameFilename);
 
-        if (! empty($this->applicationPath)) {
+        if (!empty($this->applicationPath)) {
             $relativeFile = array_reverse(explode($this->applicationPath ?? '', $frameFilename, 2))[0];
         }
 
@@ -151,4 +158,35 @@ class Backtrace
 
         return true;
     }
+
+    protected function removeBacktracePackageFrames(array $frames): array
+    {
+        return $this->startAtFrameFromClosure($frames, function (Frame $frame) {
+
+            return $frame->class !== static::class;
+        });
+    }
+
+    /**
+     * @param \Spatie\Backtrace\Frame[] $frames
+     * @param \Closure $closure
+     *
+     * @return array
+     */
+    protected function startAtFrameFromClosure(array $frames, Closure $closure): array
+    {
+        foreach ($frames as $i => $frame) {
+            $foundStartingFrame = $closure($frame);
+
+            if ($foundStartingFrame) {
+                return $frames;
+            }
+
+            unset($frames[$i]);
+        }
+
+        return $frames;
+    }
+
+
 }

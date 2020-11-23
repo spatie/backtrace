@@ -1,5 +1,0 @@
-line_number: 13
-method: execute
-class: Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction
-file: /tests/TestClasses/ThrowAndReturnExceptionAction.php
-is_application_frame: true
