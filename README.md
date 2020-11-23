@@ -15,9 +15,9 @@ $frames = Spatie\Backtrace\Backtrace::create()->frames();
 
 $firstFrame = $frames[0];
 
-$firstFrame->file // returns the file name;
-$firstFrame->lineNumber // returns the line number;
-$firstFrame->class // returns the class name
+$firstFrame->file; // returns the file name
+$firstFrame->lineNumber; // returns the line number
+$firstFrame->class; // returns the class name
 ```
 
 ## Support us
