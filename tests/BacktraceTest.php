@@ -5,7 +5,6 @@ namespace Spatie\Backtrace\Tests;
 use PHPUnit\Framework\TestSuite;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
-use Spatie\Backtrace\Tests\Concerns\MatchesCodeSnippetSnapshots;
 use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 
 class BacktraceTest extends TestCase
@@ -20,7 +19,7 @@ class BacktraceTest extends TestCase
         /** @var \Spatie\Backtrace\Frame $firstFrame */
         $firstFrame = $frames[0];
 
-        $this->assertEquals(__LINE__ - 7, $firstFrame->lineNumber,);
+        $this->assertEquals(__LINE__ - 7, $firstFrame->lineNumber);
         $this->assertEquals(__FILE__, $firstFrame->file);
         $this->assertEquals(static::class, $firstFrame->class);
         $this->assertEquals(explode('::', __METHOD__)[1], $firstFrame->method);
@@ -96,5 +95,23 @@ class BacktraceTest extends TestCase
         $firstFrame = Backtrace::create()->offset(1)->frames()[0];
 
         $this->assertEquals('runTest', $firstFrame->method);
+    }
+
+    /** @test */
+    public function it_can_get_a_backtrace_from_a_throwable()
+    {
+        $throwable = ThrowAndReturnExceptionAction::getThrowable();
+
+        $frames = Backtrace::createForThrowable($throwable)->frames();
+
+        $this->assertGreaterThan(10, count($frames));
+
+        /** @var Frame $firstFrame */
+        $firstFrame = $frames[0];
+
+        $this->assertEquals(13, $firstFrame->lineNumber);
+        $this->assertEquals(ThrowAndReturnExceptionAction::class, $firstFrame->class);
+        $this->assertEquals('getThrowable', $firstFrame->method);
+
     }
 }

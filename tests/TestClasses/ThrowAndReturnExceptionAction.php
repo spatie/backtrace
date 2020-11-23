@@ -7,7 +7,7 @@ use Throwable;
 
 class ThrowAndReturnExceptionAction
 {
-    public function execute(): Throwable
+    public static function getThrowable(): Throwable
     {
         try {
             throw new Exception();
