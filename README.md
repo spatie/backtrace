@@ -4,7 +4,7 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/backtrace/run-tests?label=tests)](https://github.com/spatie/backtrace/actions?query=workflow%3Arun-tests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/backtrace.svg?style=flat-square)](https://packagist.org/packages/spatie/backtrace)
 
-To get the back trace in PHP you can use the `debug_backtrace` function. By default, it can be hard to work with. The
+To get the backtrace in PHP you can use the `debug_backtrace` function. By default, it can be hard to work with. The
 reported function name is skewed: it belongs to the previous frame. Also, options need to be passed using a bitmask.
 
 This package provides a better way than `debug_backtrace` to work with a back trace. Here's an example:
