@@ -16,14 +16,12 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "php": "^7.4|^8.0"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^9.3",
-        "symfony/var-dumper": "^5.1",
-        "vimeo/psalm": "^3.11"
+        "symfony/var-dumper": "^5.1"
     },
     "autoload": {
         "psr-4": {

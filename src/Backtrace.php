@@ -103,7 +103,13 @@ class Backtrace
             $options = $options | DEBUG_BACKTRACE_PROVIDE_OBJECT;
         }
 
-        return debug_backtrace($options, $this->limit + 3);
+        $limit = $this->limit;
+
+        if ($limit !== 0) {
+            $limit +=3;
+        }
+
+        return debug_backtrace($options, $limit);
     }
 
     protected function toFrameObjects(array $rawFrames): array
