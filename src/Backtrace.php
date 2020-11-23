@@ -106,7 +106,7 @@ class Backtrace
         $limit = $this->limit;
 
         if ($limit !== 0) {
-            $limit +=3;
+            $limit += 3;
         }
 
         return debug_backtrace($options, $limit);
