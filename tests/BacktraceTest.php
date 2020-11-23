@@ -112,6 +112,5 @@ class BacktraceTest extends TestCase
         $this->assertEquals(13, $firstFrame->lineNumber);
         $this->assertEquals(ThrowAndReturnExceptionAction::class, $firstFrame->class);
         $this->assertEquals('getThrowable', $firstFrame->method);
-
     }
 }
