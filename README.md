@@ -1,7 +1,7 @@
 # A better PHP backtrace
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/backtrace.svg?style=flat-square)](https://packagist.org/packages/spatie/backtrace)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/backtrace/run-tests?label=tests)](https://github.com/spatie/backtrace/actions?query=workflow%3Arun-tests+branch%3Amaster)
+![Tests](https://github.com/spatie/backtrace/workflows/Tests/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/backtrace.svg?style=flat-square)](https://packagist.org/packages/spatie/backtrace)
 
 To get the backtrace in PHP you can use the `debug_backtrace` function. By default, it can be hard to work with. The

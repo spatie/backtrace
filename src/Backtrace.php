@@ -109,7 +109,7 @@ class Backtrace
             $limit += 3;
         }
 
-        return dd(debug_backtrace($options, $limit));
+        return debug_backtrace($options, $limit);
     }
 
     protected function toFrameObjects(array $rawFrames): array
