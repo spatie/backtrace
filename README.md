@@ -94,7 +94,7 @@ use Spatie\Backtrace\Frame;
 
 $frames = Backtrace::create()
     ->startingFromFrame(function (Frame $frame) {
-        return $frame->class = MyClass::class;
+        return $frame->class === MyClass::class;
     })
     ->frames();
 ```
