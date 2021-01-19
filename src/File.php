@@ -6,7 +6,7 @@ use SplFileObject;
 
 class File
 {
-    protected SplFileObject $file;
+    protected $file;
 
     public function __construct(string $path)
     {

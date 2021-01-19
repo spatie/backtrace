@@ -4,17 +4,17 @@ namespace Spatie\Backtrace;
 
 class Frame
 {
-    public string $file;
+    public $file;
 
-    public int $lineNumber;
+    public $lineNumber;
 
-    public ?array $arguments = null;
+    public $arguments = null;
 
-    public bool $applicationFrame;
+    public $applicationFrame;
 
-    public ?string $method;
+    public $method;
 
-    public ?string $class;
+    public $class;
 
     public function __construct(
         string $file,

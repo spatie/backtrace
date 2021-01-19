@@ -7,19 +7,19 @@ use Throwable;
 
 class Backtrace
 {
-    protected bool $withArguments = false;
+    protected $withArguments = false;
 
-    protected bool $withObject = false;
+    protected $withObject = false;
 
-    protected ?string $applicationPath;
+    protected $applicationPath;
 
-    protected int $offset = 0;
+    protected $offset = 0;
 
-    protected int $limit = 0;
+    protected $limit = 0;
 
-    protected ?Closure $startingFromFrameClosure = null;
+    protected $startingFromFrameClosure = null;
 
-    protected ?Throwable $throwable = null;
+    protected $throwable = null;
 
     public static function create(): self
     {
