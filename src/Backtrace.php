@@ -7,7 +7,7 @@ use Throwable;
 
 class Backtrace
 {
-    /** @var bool  */
+    /** @var bool */
     protected $withArguments = false;
 
     /** @var bool */
