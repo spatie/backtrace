@@ -4,17 +4,23 @@ namespace Spatie\Backtrace;
 
 class Frame
 {
-    public string $file;
+    /** @var string */
+    public $file;
 
-    public int $lineNumber;
+    /** @var int */
+    public $lineNumber;
 
-    public ?array $arguments = null;
+    /** @var array|null */
+    public $arguments = null;
 
-    public bool $applicationFrame;
+    /** @var bool */
+    public $applicationFrame;
 
-    public ?string $method;
+    /** @var string|null */
+    public $method;
 
-    public ?string $class;
+    /** @var string|null */
+    public $class;
 
     public function __construct(
         string $file,
@@ -39,9 +45,6 @@ class Frame
 
     public function getSnippet(int $lineCount): array
     {
-        return (new CodeSnippet())
-            ->surroundingLine($this->lineNumber)
-            ->snippetLineCount($lineCount)
-            ->get($this->file);
+        return (new CodeSnippet())->surroundingLine($this->lineNumber)->snippetLineCount($lineCount)->get($this->file);
     }
 }

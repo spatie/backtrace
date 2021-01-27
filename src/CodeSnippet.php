@@ -6,9 +6,11 @@ use RuntimeException;
 
 class CodeSnippet
 {
-    protected int $surroundingLine = 1;
+    /** @var int */
+    protected $surroundingLine = 1;
 
-    protected int $snippetLineCount = 9;
+    /** @var int */
+    protected $snippetLineCount = 9;
 
     public function surroundingLine(int $surroundingLine): self
     {
