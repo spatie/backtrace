@@ -45,6 +45,21 @@ class Frame
 
     public function getSnippet(int $lineCount): array
     {
-        return (new CodeSnippet())->surroundingLine($this->lineNumber)->snippetLineCount($lineCount)->get($this->file);
+        return (new CodeSnippet())
+            ->surroundingLine($this->lineNumber)
+            ->snippetLineCount($lineCount)
+            ->get($this->file);
+    }
+
+    public function getSnippetProperties(int $lineCount): array
+    {
+        $snippet = $this->getSnippet($lineCount);
+
+        return array_map(function(int $lineNumber) use ($snippet) {
+            return [
+                'line_number' => $lineNumber,
+                'text' => $snippet[$lineNumber],
+            ];
+        }, array_keys($snippet));
     }
 }

@@ -55,6 +55,18 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_snippet_properties()
+    {
+        /** @var \Spatie\Backtrace\Frame $firstFrame */
+        $firstFrame = Backtrace::create()->frames()[0];
+
+        $snippet = $firstFrame->getSnippetProperties(5);
+
+        $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
+        $this->assertEquals(61, $snippet[2]['line_number']);
+    }
+
+    /** @test */
     public function it_can_limit_the_amount_of_frames()
     {
         $frames = Backtrace::create()->limit(5)->frames();
