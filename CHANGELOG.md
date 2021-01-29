@@ -2,7 +2,7 @@
 
 All notable changes to `backtrace` will be documented in this file
 
-## 1.0.2 - 2021-01-29
+## 1.1.0 - 2021-01-29
 
 - add `snippetProperties`
 
