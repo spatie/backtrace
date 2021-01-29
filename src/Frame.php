@@ -55,7 +55,7 @@ class Frame
     {
         $snippet = $this->getSnippet($lineCount);
 
-        return array_map(function(int $lineNumber) use ($snippet) {
+        return array_map(function (int $lineNumber) use ($snippet) {
             return [
                 'line_number' => $lineNumber,
                 'text' => $snippet[$lineNumber],
