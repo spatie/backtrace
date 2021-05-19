@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.2.0 - 2021-05-19
+
+- add `firstApplicationFrameIndex`
+
 ## 1.1.0 - 2021-01-29
 
 - add `snippetProperties`

@@ -125,4 +125,10 @@ class BacktraceTest extends TestCase
         $this->assertEquals(ThrowAndReturnExceptionAction::class, $firstFrame->class);
         $this->assertEquals('getThrowable', $firstFrame->method);
     }
+
+    /** @test */
+    public function it_can_get_the_index_of_the_first_application_frame()
+    {
+         $this->assertEquals(0, Backtrace::create()->firstApplicationFrameIndex());
+    }
 }

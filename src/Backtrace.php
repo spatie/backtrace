@@ -94,6 +94,17 @@ class Backtrace
         return $this->toFrameObjects($rawFrames);
     }
 
+    public function firstApplicationFrameIndex(): ?int
+    {
+        foreach($this->frames() as $index => $frame) {
+            if ($frame->applicationFrame) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
     protected function getRawFrames(): array
     {
         if ($this->throwable) {
