@@ -96,7 +96,7 @@ class Backtrace
 
     public function firstApplicationFrameIndex(): ?int
     {
-        foreach($this->frames() as $index => $frame) {
+        foreach ($this->frames() as $index => $frame) {
             if ($frame->applicationFrame) {
                 return $index;
             }
