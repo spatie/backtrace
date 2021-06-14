@@ -129,6 +129,6 @@ class BacktraceTest extends TestCase
     /** @test */
     public function it_can_get_the_index_of_the_first_application_frame()
     {
-         $this->assertEquals(0, Backtrace::create()->firstApplicationFrameIndex());
+        $this->assertEquals(0, Backtrace::create()->firstApplicationFrameIndex());
     }
 }
