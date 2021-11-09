@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.2.1 - 2021-11-09
+
+- Add a return typehint (#4)
+
 ## 1.2.0 - 2021-05-19
 
 - add `firstApplicationFrameIndex`
