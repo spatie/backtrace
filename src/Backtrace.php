@@ -87,6 +87,9 @@ class Backtrace
         return $this;
     }
 
+    /**
+     * @return \Spatie\Backtrace\Frame[]
+     */
     public function frames(): array
     {
         $rawFrames = $this->getRawFrames();
@@ -130,6 +133,9 @@ class Backtrace
         return debug_backtrace($options, $limit);
     }
 
+    /**
+     * @return \Spatie\Backtrace\Frame[]
+     */
     protected function toFrameObjects(array $rawFrames): array
     {
         $currentFile = $this->throwable ? $this->throwable->getFile() : '';
