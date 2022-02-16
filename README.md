@@ -101,7 +101,7 @@ $frames = Backtrace::create()
 
 With this code, all frames before the frame that concerns `MyClass` will have been filtered out.
 
-Alternatively, you can use the `offSet` method, which will skip the given number of frames. In this example the first 2 frames will not end up in `$frames`.
+Alternatively, you can use the `offset` method, which will skip the given number of frames. In this example the first 2 frames will not end up in `$frames`.
 
 ```php
 $frames = Spatie\Backtrace\Backtrace::create()
