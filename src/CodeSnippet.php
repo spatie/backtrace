@@ -60,7 +60,7 @@ class CodeSnippet
     {
         $snippet = $this->get($fileName);
 
-        $snippetStrings = array_map(function(string $line, string $number) {
+        $snippetStrings = array_map(function (string $line, string $number) {
             return "{$number} {$line}";
         }, $snippet, array_keys($snippet));
 
