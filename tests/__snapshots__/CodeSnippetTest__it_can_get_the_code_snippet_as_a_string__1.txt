@@ -1,0 +1,15 @@
+3 namespace Spatie\Backtrace\Tests\TestClasses;
+4 
+5 use RuntimeException;
+6 
+7 class TestClass
+8 {
+9     /** @var int */
+10     protected $surroundingLine = 1;
+11 
+12     /** @var int */
+13     protected $snippetLineCount = 9;
+14 
+15     public function surroundingLine(int $surroundingLine): self
+16     {
+17         $this->surroundingLine = $surroundingLine;

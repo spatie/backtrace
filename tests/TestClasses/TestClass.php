@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\Backtrace;
+namespace Spatie\Backtrace\Tests\TestClasses;
 
 use RuntimeException;
 
-class CodeSnippet
+class TestClass
 {
     /** @var int */
     protected $surroundingLine = 1;
@@ -62,7 +62,7 @@ class CodeSnippet
 
         $snippetStrings = array_map(function(string $line, string $number) {
             return "{$number} {$line}";
-        }, $snippet, array_keys($snippet));
+        }, $snippet);
 
         return implode(PHP_EOL, $snippetStrings);
     }
