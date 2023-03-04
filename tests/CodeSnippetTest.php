@@ -17,6 +17,8 @@ class CodeSnippetTest extends TestCase
             ->surroundingLine(10)
             ->getAsString(__DIR__ . '/TestClasses/TestClass.php');
 
+        $snippetString = str_replace('\r\n', PHP_EOL, $snippetString);
+
         $this->assertMatchesTextSnapshot($snippetString);
     }
 }
