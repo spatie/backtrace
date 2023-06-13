@@ -45,9 +45,9 @@ class Backtrace
         return $this;
     }
 
-    public function withArguments(): self
+    public function withArguments(bool $withArguments = true): self
     {
-        $this->withArguments = true;
+        $this->withArguments = $withArguments;
 
         return $this;
     }
