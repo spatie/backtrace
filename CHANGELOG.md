@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.4.1 - 2023-06-13
+
+- Allow `withArguments` to be specified with boolean
+
 ## 1.4.0 - 2023-03-04
 
 Add `getSnippetAsString` to `Frame`
