@@ -3,12 +3,20 @@
 namespace Spatie\Backtrace;
 
 use Closure;
+use Spatie\Backtrace\Arguments\ArgumentReducers;
+use Spatie\Backtrace\Arguments\ReduceArgumentsAction;
 use Throwable;
 
 class Backtrace
 {
     /** @var bool */
     protected $withArguments = false;
+
+    /** @var bool */
+    protected $reduceArguments = false;
+
+    /** @var array<\Spatie\Backtrace\Arguments\Reducers\ArgumentReducer> */
+    protected $argumentReducers = null;
 
     /** @var bool */
     protected $withObject = false;
@@ -45,11 +53,19 @@ class Backtrace
         return $this;
     }
 
-    public function withArguments(bool $withArguments = true): self
-    {
+    public function withArguments(
+        bool $withArguments = true
+    ): self {
         $this->withArguments = $withArguments;
 
         return $this;
+    }
+
+    public function reduceArguments(
+        ?array $argumentReducers = null
+    ) {
+        $this->reduceArguments = true;
+        $this->argumentReducers = $argumentReducers;
     }
 
     public function withObject(): self
@@ -143,8 +159,10 @@ class Backtrace
 
         $frames = [];
 
+        $reduceArgumentsAction = new ReduceArgumentsAction($this->resolveArgumentReducers());
+
         foreach ($rawFrames as $rawFrame) {
-            $frames[] = new Frame(
+            $frame = new Frame(
                 $currentFile,
                 $currentLine,
                 $rawFrame['args'] ?? null,
@@ -152,6 +170,12 @@ class Backtrace
                 $rawFrame['class'] ?? null,
                 $this->isApplicationFrame($currentFile)
             );
+
+            if($this->reduceArguments){
+                $frame->arguments = $reduceArgumentsAction->execute($frame);
+            }
+
+            $frames[] = $frame;
 
             $currentFile = $rawFrame['file'] ?? 'unknown';
             $currentLine = $rawFrame['line'] ?? 0;
@@ -182,7 +206,7 @@ class Backtrace
             $relativeFile = array_reverse(explode($this->applicationPath ?? '', $frameFilename, 2))[0];
         }
 
-        if (strpos($relativeFile, DIRECTORY_SEPARATOR . 'vendor') === 0) {
+        if (strpos($relativeFile, DIRECTORY_SEPARATOR.'vendor') === 0) {
             return false;
         }
 
@@ -215,5 +239,12 @@ class Backtrace
         }
 
         return $frames;
+    }
+
+    protected function resolveArgumentReducers(): ArgumentReducers
+    {
+        return $this->argumentReducers !== null
+            ? ArgumentReducers::create($this->argumentReducers)
+            : ArgumentReducers::default();
     }
 }
