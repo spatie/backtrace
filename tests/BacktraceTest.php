@@ -42,6 +42,30 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_add_the_arguments_reduced()
+    {
+        $frame = Backtrace::create()
+            ->withArguments()
+            ->frames()[3];
+
+        $this->assertInstanceOf(self::class, $frame->arguments[0]);
+
+        $frame = Backtrace::create()
+            ->withArguments()
+            ->reduceArguments()
+            ->frames()[3];
+
+        $this->assertEquals([
+            "name" => "test",
+            "value" => "object",
+            "original_type" => self::class,
+            "passed_by_reference" => false,
+            "is_variadic" => false,
+            "truncated" => false,
+        ], $frame->arguments[0]);
+    }
+
+    /** @test */
     public function it_can_get_the_snippet_around_the_frame()
     {
         /** @var \Spatie\Backtrace\Frame $firstFrame */

@@ -156,6 +156,8 @@ class TraceArguments
 
     protected function getTraceFrame(): Frame
     {
-        return Backtrace::create()->withArguments()->frames()[1];
+        return Backtrace::create()
+            ->withArguments()
+            ->frames()[1];
     }
 }

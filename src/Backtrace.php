@@ -63,9 +63,11 @@ class Backtrace
 
     public function reduceArguments(
         ?array $argumentReducers = null
-    ) {
+    ): self {
         $this->reduceArguments = true;
         $this->argumentReducers = $argumentReducers;
+
+        return $this;
     }
 
     public function withObject(): self
