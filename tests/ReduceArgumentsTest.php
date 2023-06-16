@@ -2,7 +2,6 @@
 
 namespace Spatie\Backtrace\Tests;
 
-
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;

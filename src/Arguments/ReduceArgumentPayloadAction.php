@@ -33,7 +33,7 @@ class ReduceArgumentPayloadAction
         }
 
         if (gettype($argument) === 'object') {
-            return new ReducedArgument('object', get_debug_type($argument),);
+            return new ReducedArgument('object', get_debug_type($argument), );
         }
 
         return new ReducedArgument(

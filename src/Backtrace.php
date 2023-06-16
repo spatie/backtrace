@@ -171,7 +171,7 @@ class Backtrace
                 $this->isApplicationFrame($currentFile)
             );
 
-            if($this->reduceArguments){
+            if($this->reduceArguments) {
                 $frame->arguments = $reduceArgumentsAction->execute($frame);
             }
 

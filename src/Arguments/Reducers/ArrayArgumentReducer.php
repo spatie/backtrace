@@ -14,7 +14,7 @@ class ArrayArgumentReducer implements ReducedArgumentContract
     /** @var int */
     protected $maxArraySize = 25;
 
-    /** @var \Spatie\Backtrace\Arguments\ReduceArgumentPayloadAction  */
+    /** @var \Spatie\Backtrace\Arguments\ReduceArgumentPayloadAction */
     protected $reduceArgumentPayloadAction;
 
     public function __construct()
@@ -30,7 +30,6 @@ class ArrayArgumentReducer implements ReducedArgumentContract
 
         return $this->reduceArgument($argument, 'array');
     }
-
 
     protected function reduceArgument(array $argument, string $originalType): ReducedArgumentContract
     {

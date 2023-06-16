@@ -7,7 +7,7 @@ class ReducedArgument implements ReducedArgumentContract
     /** @var mixed */
     public $value;
 
-    /** @var string  */
+    /** @var string */
     public $originalType;
 
     /**

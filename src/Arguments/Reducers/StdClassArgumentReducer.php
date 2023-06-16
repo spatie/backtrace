@@ -2,7 +2,6 @@
 
 namespace Spatie\Backtrace\Arguments\Reducers;
 
-use Spatie\Backtrace\Arguments\ReducedArgument\ReducedArgument;
 use Spatie\Backtrace\Arguments\ReducedArgument\ReducedArgumentContract;
 use Spatie\Backtrace\Arguments\ReducedArgument\UnReducedArgument;
 use stdClass;

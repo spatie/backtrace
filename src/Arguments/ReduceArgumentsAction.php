@@ -6,8 +6,8 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
-use Spatie\Backtrace\Frame as SpatieFrame;
 use Spatie\Backtrace\Arguments\ReducedArgument\VariadicReducedArgument;
+use Spatie\Backtrace\Frame as SpatieFrame;
 use Throwable;
 
 class ReduceArgumentsAction
