@@ -87,7 +87,7 @@ class BacktraceTest extends TestCase
         $snippet = $firstFrame->getSnippetProperties(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
-        $this->assertEquals(61, $snippet[2]['line_number']);
+        $this->assertEquals(85, $snippet[2]['line_number']);
     }
 
     /** @test */
