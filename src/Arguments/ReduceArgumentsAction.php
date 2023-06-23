@@ -7,38 +7,40 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use Spatie\Backtrace\Arguments\ReducedArgument\VariadicReducedArgument;
-use Spatie\Backtrace\Frame as SpatieFrame;
 use Throwable;
 
 class ReduceArgumentsAction
 {
-    /** @var \Spatie\Backtrace\Arguments\ArgumentReducers */
+    /** @var ArgumentReducers */
     protected $argumentReducers;
 
     /** @var ReduceArgumentPayloadAction */
     protected $reduceArgumentPayloadAction;
 
     public function __construct(
-        $argumentReducers
+        ArgumentReducers $argumentReducers
     ) {
         $this->argumentReducers = $argumentReducers;
         $this->reduceArgumentPayloadAction = new ReduceArgumentPayloadAction($argumentReducers);
     }
 
-    public function execute(SpatieFrame $frame): ?array
-    {
+    public function execute(
+        ?string $class,
+        ?string $method,
+        ?array $frameArguments
+    ): ?array {
         try {
-            if ($frame->arguments === null) {
+            if ($frameArguments === null) {
                 return null;
             }
 
-            $parameters = $this->getParameters($frame);
+            $parameters = $this->getParameters($class, $method);
 
             if ($parameters === null) {
                 $arguments = [];
 
-                foreach ($frame->arguments as $index => $argument) {
-                    $arguments[$index] = ProvidedArgument::fromNonReflectableParameter($index)
+                foreach ($frameArguments as $index => $argument) {
+                    $arguments["arg".$index] = ProvidedArgument::fromNonReflectableParameter($index)
                         ->setReducedArgument($this->reduceArgumentPayloadAction->reduce($argument))
                         ->toArray();
                 }
@@ -50,7 +52,7 @@ class ReduceArgumentsAction
                 function ($argument) {
                     return $this->reduceArgumentPayloadAction->reduce($argument);
                 },
-                $frame->arguments,
+                $frameArguments,
             );
 
             $argumentsCount = count($arguments);
@@ -85,18 +87,20 @@ class ReduceArgumentsAction
     }
 
     /** @return null|Array<\Spatie\Backtrace\Arguments\ProvidedArgument> */
-    protected function getParameters(SpatieFrame $frame): ?array
-    {
+    protected function getParameters(
+        ?string $class,
+        ?string $method
+    ): ?array {
         try {
-            $reflection = null !== $frame->class
-                ? new ReflectionMethod($frame->class, $frame->method)
-                : new ReflectionFunction($frame->method);
+            $reflection = $class !== null
+                ? new ReflectionMethod($class, $method)
+                : new ReflectionFunction($method);
         } catch (ReflectionException $e) {
             return null;
         }
 
         return array_map(
-            function (ReflectionParameter $reflectionParameter) use ($frame) {
+            function (ReflectionParameter $reflectionParameter) {
                 return ProvidedArgument::fromReflectionParameter($reflectionParameter);
             },
             $reflection->getParameters(),
