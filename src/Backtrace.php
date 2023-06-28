@@ -63,7 +63,7 @@ class Backtrace
     }
 
     /**
-     * @param array<ArgumentReducer>|ArgumentReducers|null $argumentReducers
+     * @param array<class-string<ArgumentReducer>|ArgumentReducer>|ArgumentReducers|null $argumentReducers
      *
      * @return $this
      */
