@@ -165,7 +165,7 @@ class Backtrace
         $reduceArgumentsAction = new ReduceArgumentsAction($this->resolveArgumentReducers());
 
         foreach ($rawFrames as $rawFrame) {
-            $frame = new Frame(
+            $frames[] = new Frame(
                 $currentFile,
                 $currentLine,
                 $arguments,
@@ -183,8 +183,6 @@ class Backtrace
                     $arguments
                 );
             }
-
-            $frames[] = $frame;
 
             $currentFile = $rawFrame['file'] ?? 'unknown';
             $currentLine = $rawFrame['line'] ?? 0;
