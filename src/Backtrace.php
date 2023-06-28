@@ -5,6 +5,7 @@ namespace Spatie\Backtrace;
 use Closure;
 use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Arguments\ReduceArgumentsAction;
+use Spatie\Backtrace\Arguments\Reducers\ArgumentReducer;
 use Throwable;
 
 class Backtrace
@@ -15,7 +16,7 @@ class Backtrace
     /** @var bool */
     protected $reduceArguments = false;
 
-    /** @var array<\Spatie\Backtrace\Arguments\Reducers\ArgumentReducer> */
+    /** @var array<ArgumentReducer>|ArgumentReducers|null */
     protected $argumentReducers = null;
 
     /** @var bool */
@@ -61,8 +62,13 @@ class Backtrace
         return $this;
     }
 
+    /**
+     * @param array<ArgumentReducer>|ArgumentReducers|null $argumentReducers
+     *
+     * @return $this
+     */
     public function reduceArguments(
-        ?array $argumentReducers = null
+        $argumentReducers = null
     ): self {
         $this->reduceArguments = true;
         $this->argumentReducers = $argumentReducers;
@@ -250,8 +256,14 @@ class Backtrace
 
     protected function resolveArgumentReducers(): ArgumentReducers
     {
-        return $this->argumentReducers !== null
-            ? ArgumentReducers::create($this->argumentReducers)
-            : ArgumentReducers::default();
+        if($this->argumentReducers === null){
+            return ArgumentReducers::default();
+        }
+
+        if($this->argumentReducers instanceof ArgumentReducers){
+            return $this->argumentReducers;
+        }
+
+        return ArgumentReducers::create($this->argumentReducers);
     }
 }

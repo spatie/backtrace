@@ -34,14 +34,14 @@ class ArgumentReducers
         ));
     }
 
-    public static function default(): self
+    public static function default(array $extra = []): self
     {
-        return new self(static::defaultReducers());
+        return new self(static::defaultReducers($extra));
     }
 
-    public static function minimal(): self
+    public static function minimal(array $extra = []): self
     {
-        return new self(static::minimalReducers());
+        return new self(static::minimalReducers($extra));
     }
 
     /**
@@ -52,9 +52,9 @@ class ArgumentReducers
         $this->argumentReducers = $argumentReducers;
     }
 
-    protected static function defaultReducers(): array
+    protected static function defaultReducers(array $extra = []): array
     {
-        return [
+        return array_merge($extra, [
             new BaseTypeArgumentReducer(),
             new ArrayArgumentReducer(),
             new StdClassArgumentReducer(),
@@ -65,17 +65,17 @@ class ArgumentReducers
             new DateTimeZoneArgumentReducer(),
             new SymphonyRequestArgumentReducer(),
             new StringableArgumentReducer(),
-        ];
+        ]);
     }
 
-    protected static function minimalReducers(): array
+    protected static function minimalReducers(array $extra = []): array
     {
-        return [
+        return array_merge($extra, [
             new BaseTypeArgumentReducer(),
             new MinimalArrayArgumentReducer(),
             new EnumArgumentReducer(),
             new ClosureArgumentReducer(),
             new SensitiveParameterArrayReducer(),
-        ];
+        ]);
     }
 }
