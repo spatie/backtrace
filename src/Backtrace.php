@@ -180,7 +180,9 @@ class Backtrace
                 $this->isApplicationFrame($currentFile)
             );
 
-            $arguments = $rawFrame['args'] ?? null;
+            $arguments = $this->withArguments
+                ? $rawFrame['args'] ?? null
+                : null;
 
             if ($this->reduceArguments) {
                 $arguments = $reduceArgumentsAction->execute(
@@ -256,11 +258,11 @@ class Backtrace
 
     protected function resolveArgumentReducers(): ArgumentReducers
     {
-        if($this->argumentReducers === null) {
+        if ($this->argumentReducers === null) {
             return ArgumentReducers::default();
         }
 
-        if($this->argumentReducers instanceof ArgumentReducers) {
+        if ($this->argumentReducers instanceof ArgumentReducers) {
             return $this->argumentReducers;
         }
 

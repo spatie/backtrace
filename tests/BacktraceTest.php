@@ -2,12 +2,14 @@
 
 namespace Spatie\Backtrace\Tests;
 
+use DateTime;
 use PHPUnit\Framework\TestSuite;
 use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
 use Spatie\Backtrace\Tests\TestClasses\FakeArgumentReducer;
 use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
+use Spatie\Backtrace\Tests\TestClasses\TraceArguments;
 
 class BacktraceTest extends TestCase
 {
@@ -41,6 +43,36 @@ class BacktraceTest extends TestCase
             ->frames()[0];
 
         $this->assertIsArray($firstFrame->arguments);
+    }
+
+    /** @test */
+    public function it_can_disable_the_use_of_arguments_with_a_backtrace()
+    {
+        function createBackTraceWithoutArguments(string $string): array
+        {
+            return Backtrace::create()
+                ->withArguments(false)
+                ->frames();
+        }
+
+        $frames = createBackTraceWithoutArguments('Hello World');
+
+        $this->assertNull($frames[1]->arguments);
+    }
+
+    /** @test */
+    public function it_can_disable_the_use_of_arguments_with_a_throwable()
+    {
+        $exception = TraceArguments::create()->exception(
+            'Hello World',
+            new DateTime(),
+        );
+
+        $this->assertNull(Backtrace::createForThrowable($exception)
+            ->withArguments(false)
+            ->frames()[1]
+            ->arguments
+        );
     }
 
     /** @test */
@@ -124,7 +156,7 @@ class BacktraceTest extends TestCase
         $snippet = $firstFrame->getSnippetProperties(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
-        $this->assertEquals(122, $snippet[2]['line_number']);
+        $this->assertEquals(154, $snippet[2]['line_number']);
     }
 
     /** @test */
