@@ -40,7 +40,7 @@ class ReduceArgumentsAction
                 $arguments = [];
 
                 foreach ($frameArguments as $index => $argument) {
-                    $arguments["arg".$index] = ProvidedArgument::fromNonReflectableParameter($index)
+                    $arguments[$index] = ProvidedArgument::fromNonReflectableParameter($index)
                         ->setReducedArgument($this->reduceArgumentPayloadAction->reduce($argument))
                         ->toArray();
                 }

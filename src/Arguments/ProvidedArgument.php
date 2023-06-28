@@ -50,7 +50,7 @@ class ProvidedArgument
         int $index
     ): self {
         return new self(
-            (string) $index,
+            "arg{$index}",
             false,
         );
     }

@@ -44,21 +44,24 @@ class BacktraceTest extends TestCase
     /** @test */
     public function it_can_get_add_the_arguments_reduced()
     {
-        $frame = Backtrace::create()
-            ->withArguments()
-            ->frames()[3];
+        function createBackTrace(string $test, bool $withArguments): Frame
+        {
+            return Backtrace::create()
+                ->withArguments($withArguments)
+                ->reduceArguments()
+                ->frames()[1];
+        }
 
-        $this->assertInstanceOf(self::class, $frame->arguments[0]);
+        $frame = createBackTrace('test', false);
 
-        $frame = Backtrace::create()
-            ->withArguments()
-            ->reduceArguments()
-            ->frames()[3];
+        $this->assertNull($frame->arguments);
+
+        $frame = createBackTrace('test', true);
 
         $this->assertEquals([
             "name" => "test",
-            "value" => "object",
-            "original_type" => self::class,
+            "value" => "test",
+            "original_type" => 'string',
             "passed_by_reference" => false,
             "is_variadic" => false,
             "truncated" => false,
@@ -87,7 +90,7 @@ class BacktraceTest extends TestCase
         $snippet = $firstFrame->getSnippetProperties(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
-        $this->assertEquals(85, $snippet[2]['line_number']);
+        $this->assertEquals(88, $snippet[2]['line_number']);
     }
 
     /** @test */

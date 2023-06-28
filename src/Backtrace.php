@@ -158,7 +158,7 @@ class Backtrace
     {
         $currentFile = $this->throwable ? $this->throwable->getFile() : '';
         $currentLine = $this->throwable ? $this->throwable->getLine() : 0;
-        $currentArguments = [];
+        $arguments = $this->withArguments ? [] : null;
 
         $frames = [];
 
@@ -168,25 +168,26 @@ class Backtrace
             $frame = new Frame(
                 $currentFile,
                 $currentLine,
-                $currentArguments,
+                $arguments,
                 $rawFrame['function'] ?? null,
                 $rawFrame['class'] ?? null,
                 $this->isApplicationFrame($currentFile)
             );
 
+            $arguments = $rawFrame['args'] ?? null;
+
+            if ($this->reduceArguments) {
+                $arguments = $reduceArgumentsAction->execute(
+                    $rawFrame['class'] ?? null,
+                    $rawFrame['function'] ?? null,
+                    $arguments
+                );
+            }
+
             $frames[] = $frame;
 
             $currentFile = $rawFrame['file'] ?? 'unknown';
             $currentLine = $rawFrame['line'] ?? 0;
-            $currentArguments = $rawFrame['args'] ?? [];
-
-            if ($this->reduceArguments) {
-                $currentArguments = $reduceArgumentsAction->execute(
-                    $rawFrame['class'] ?? null,
-                    $rawFrame['function'] ?? null,
-                    $currentArguments
-                );
-            }
         }
 
         $frames[] = new Frame(
@@ -201,7 +202,6 @@ class Backtrace
         if ($closure = $this->startingFromFrameClosure) {
             $frames = $this->startAtFrameFromClosure($frames, $closure);
         }
-
         $frames = array_slice($frames, $this->offset, $this->limit === 0 ? PHP_INT_MAX : $this->limit);
 
         return array_values($frames);

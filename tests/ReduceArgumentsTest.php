@@ -32,7 +32,11 @@ class ReduceArgumentsTest extends TestCase
         $frame = TraceArguments::create()->withoutArgumentsEnabledInTrace();
 
         $this->assertNull(
-            (new ReduceArgumentsAction(ArgumentReducers::default()))->execute($frame)
+            (new ReduceArgumentsAction(ArgumentReducers::default()))->execute(
+                $frame->class,
+                $frame->method,
+                $frame->arguments
+            )
         );
     }
 
@@ -41,10 +45,14 @@ class ReduceArgumentsTest extends TestCase
      * @dataProvider reduceableFramesDataSet
      */
     public function it_can_reduce_frames_with_arguments(
-        Frame $frame,
+        array $frames,
         array $expected
     ) {
-        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute($frame);
+        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute(
+            $frames[1]->class,
+            $frames[1]->method,
+            $frames[2]->arguments // The package shifts these arguments automatically, we're calling this action manually
+        );
 
         $this->assertEquals(
             array_map(function (ProvidedArgument $argument) {
@@ -351,19 +359,19 @@ class ReduceArgumentsTest extends TestCase
 
         yield 'with called closure (no reflection possible)' => [
             TraceArguments::create()->withCalledClosure(), [
-                ProvidedArgumentFactory::create('0')
+                ProvidedArgumentFactory::create('arg0')
                     ->reducedValue('string')
                     ->originalType('string')
                     ->get(),
-                ProvidedArgumentFactory::create('1')
+                ProvidedArgumentFactory::create('arg1')
                     ->reducedValue('Europe/Brussels')
                     ->originalType(DateTimeZone::class)
                     ->get(),
-                ProvidedArgumentFactory::create('2')
+                ProvidedArgumentFactory::create('arg2')
                     ->reducedValue(42)
                     ->originalType('int')
                     ->get(),
-                ProvidedArgumentFactory::create('3')
+                ProvidedArgumentFactory::create('arg3')
                     ->reducedValue(69)
                     ->originalType('int')
                     ->get(),
@@ -394,11 +402,11 @@ class ReduceArgumentsTest extends TestCase
                     ->reducedValue(['a', 'b', 'c'])
                     ->originalType('array')
                     ->get(),
-                ProvidedArgumentFactory::create('1')
+                ProvidedArgumentFactory::create('arg1')
                     ->reducedValue(['d', 'e', 'f'])
                     ->originalType('array')
                     ->get(),
-                ProvidedArgumentFactory::create('2')
+                ProvidedArgumentFactory::create('arg2')
                     ->reducedValue(['x', 'y', 'z'])
                     ->originalType('array')
                     ->get(),
@@ -413,13 +421,17 @@ class ReduceArgumentsTest extends TestCase
             $this->markTestSkipped('Enums are only supported in PHP 8.1+');
         }
 
-        $frame = TraceArguments::create()->withEnums(
+        $frames = TraceArguments::create()->withEnums(
             FakeUnitEnum::A,
             FakeStringBackedEnum::A,
             FakeIntBackedEnum::A,
         );
 
-        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute($frame);
+        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute(
+            $frames[1]->class,
+            $frames[1]->method,
+            $frames[2]->arguments // The package shifts these arguments automatically, we're calling this action manually
+        );
 
         $this->assertEquals([
             ProvidedArgumentFactory::create('unitEnum')
@@ -454,11 +466,15 @@ class ReduceArgumentsTest extends TestCase
             }
         };
 
-        $frame = TraceArguments::create()->withStringable(
+        $frames = TraceArguments::create()->withStringable(
             $stringable
         );
 
-        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute($frame);
+        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute(
+            $frames[1]->class,
+            $frames[1]->method,
+            $frames[2]->arguments // The package shifts these arguments automatically, we're calling this action manually
+        );
 
         $this->assertEquals([
             ProvidedArgumentFactory::create('stringable')
@@ -472,14 +488,18 @@ class ReduceArgumentsTest extends TestCase
     /** @test */
     public function it_will_reduce_values_even_when_no_reducers_are_specified()
     {
-        $frame = TraceArguments::create()->withCombination(
+        $frames = TraceArguments::create()->withCombination(
             'string',
             new DateTimeZone('Europe/Brussels'),
             42,
             69
         );
 
-        $reduced = (new ReduceArgumentsAction(ArgumentReducers::create([])))->execute($frame);
+        $reduced = (new ReduceArgumentsAction(ArgumentReducers::create([])))->execute(
+            $frames[1]->class,
+            $frames[1]->method,
+            $frames[2]->arguments // The package shifts these arguments automatically, we're calling this action manually
+        );
 
         $this->assertEquals([
             ProvidedArgumentFactory::create('simple')
@@ -508,9 +528,13 @@ class ReduceArgumentsTest extends TestCase
             $this->markTestSkipped('Fails on Linux, due to no arguments provided when creating the trace when too many arguments are provided');
         }
 
-        $frame = TraceArguments::create()->withNotEnoughArgumentsProvided();
+        $frames = TraceArguments::create()->withNotEnoughArgumentsProvided();
 
-        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute($frame);
+        $reduced = (new ReduceArgumentsAction(ArgumentReducers::default()))->execute(
+            $frames[0]->class,
+            $frames[0]->method,
+            $frames[1]->arguments // The package shifts these arguments automatically, we're calling this action manually
+        );
 
         $this->assertEquals([
             ProvidedArgumentFactory::create('simple')

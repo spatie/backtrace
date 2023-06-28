@@ -9,7 +9,6 @@ use DateTimeZone;
 use Exception;
 use SensitiveParameter;
 use Spatie\Backtrace\Backtrace;
-use Spatie\Backtrace\Frame;
 use stdClass;
 use Throwable;
 
@@ -25,9 +24,9 @@ class TraceArguments
         return Backtrace::create()->frames()[0];
     }
 
-    public function withoutArguments(): Frame
+    public function withoutArguments(): array
     {
-        return $this->getTraceFrame();
+        return $this->getTraceFrames();
     }
 
     public function withSimpleArguments(
@@ -41,110 +40,110 @@ class TraceArguments
         float $floatNan,
         float $floatInfinity,
         ?string $null
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withEnums(
         FakeUnitEnum $unitEnum,
         FakeStringBackedEnum $stringBackedEnum,
         FakeIntBackedEnum $intBackedEnum
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withArray(
         array $array
     ) {
-        return $this->getTraceFrame();
+        return $this->getTraceFrames();
     }
 
     public function withDefaults(
         string $stringA,
         string $stringB = 'B'
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withVariadicArgument(
         string $base,
         string ...$strings
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withDefaultAndVardiadicArgument(
         string $base = 'base',
         string ...$strings
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withClosure(
         Closure $closure
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withDate(
         DateTime $dateTime,
         DateTimeImmutable $dateTimeImmutable
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withTimeZone(
         DateTimeZone $dateTimeZone
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withSensitiveParameter(
         #[SensitiveParameter]
         string $sensitive
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function withCombination(
         string $simple,
         DateTimeZone $object,
         int ...$variadic
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
-    public function withCalledClosure(): Frame
+    public function withCalledClosure(): array
     {
         $closure = function (
             $simple,
             $object,
             ...$variadic
         ) {
-            return $this->getTraceFrame();
+            return $this->getTraceFrames();
         };
 
         return $closure('string', new DateTimeZone('Europe/Brussels'), 42, 69);
     }
 
-    public function withStdClass(stdClass $class): Frame
+    public function withStdClass(stdClass $class): array
     {
-        return $this->getTraceFrame();
+        return $this->getTraceFrames();
     }
 
-    public function withNotEnoughArgumentsProvided(): Frame
+    public function withNotEnoughArgumentsProvided(): array
     {
         try {
             $this->withCombination('provided');
         } catch (Throwable $exception) {
-            return Backtrace::createForThrowable($exception)->withArguments()->frames()[0];
+            return Backtrace::createForThrowable($exception)->withArguments()->frames();
         }
     }
 
     public function withStringable(
         \Stringable $stringable
-    ): Frame {
-        return $this->getTraceFrame();
+    ): array {
+        return $this->getTraceFrames();
     }
 
     public function exception(
@@ -154,10 +153,10 @@ class TraceArguments
         return new Exception('Some exception');
     }
 
-    protected function getTraceFrame(): Frame
+    protected function getTraceFrames(): array
     {
         return Backtrace::create()
             ->withArguments()
-            ->frames()[1];
+            ->frames();
     }
 }
