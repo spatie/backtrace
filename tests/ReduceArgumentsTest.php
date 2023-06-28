@@ -9,7 +9,6 @@ use SensitiveParameterValue;
 use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Arguments\ProvidedArgument;
 use Spatie\Backtrace\Arguments\ReduceArgumentsAction;
-use Spatie\Backtrace\Frame;
 use Spatie\Backtrace\Tests\TestClasses\FakeIntBackedEnum;
 use Spatie\Backtrace\Tests\TestClasses\FakeStringBackedEnum;
 use Spatie\Backtrace\Tests\TestClasses\FakeUnitEnum;
