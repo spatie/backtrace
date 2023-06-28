@@ -3,8 +3,10 @@
 namespace Spatie\Backtrace\Tests;
 
 use PHPUnit\Framework\TestSuite;
+use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
+use Spatie\Backtrace\Tests\TestClasses\FakeArgumentReducer;
 use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 
 class BacktraceTest extends TestCase
@@ -42,6 +44,65 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_add_the_arguments_reduced()
+    {
+        function createBackTrace(string $test, bool $withArguments): Frame
+        {
+            return Backtrace::create()
+                ->withArguments($withArguments)
+                ->reduceArguments()
+                ->frames()[1];
+        }
+
+        $frame = createBackTrace('test', false);
+
+        $this->assertNull($frame->arguments);
+
+        $frame = createBackTrace('test', true);
+
+        $this->assertEquals([
+            "name" => "test",
+            "value" => "test",
+            "original_type" => 'string',
+            "passed_by_reference" => false,
+            "is_variadic" => false,
+            "truncated" => false,
+        ], $frame->arguments[0]);
+    }
+
+    /** @test */
+    public function it_can_manually_define_a_reducer_using_an_array()
+    {
+        function createBackTraceWithReducerFromArray(string $test): Frame
+        {
+            return Backtrace::create()
+                ->withArguments()
+                ->reduceArguments([new FakeArgumentReducer()])
+                ->frames()[1];
+        }
+
+        $frame = createBackTraceWithReducerFromArray('test', true);
+
+        $this->assertEquals('FAKE', $frame->arguments[0]['value']);
+    }
+
+    /** @test */
+    public function it_can_manually_define_a_reducer_using_an_argument_reducers_object()
+    {
+        function createBackTraceWithReducerFromObject(string $test): Frame
+        {
+            return Backtrace::create()
+                ->withArguments()
+                ->reduceArguments(ArgumentReducers::default([new FakeArgumentReducer()]))
+                ->frames()[1];
+        }
+
+        $frame = createBackTraceWithReducerFromObject('test', true);
+
+        $this->assertEquals('FAKE', $frame->arguments[0]['value']);
+    }
+
+    /** @test */
     public function it_can_get_the_snippet_around_the_frame()
     {
         /** @var \Spatie\Backtrace\Frame $firstFrame */
@@ -63,7 +124,7 @@ class BacktraceTest extends TestCase
         $snippet = $firstFrame->getSnippetProperties(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
-        $this->assertEquals(61, $snippet[2]['line_number']);
+        $this->assertEquals(122, $snippet[2]['line_number']);
     }
 
     /** @test */
