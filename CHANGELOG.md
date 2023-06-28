@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.5.3 - 2023-06-28
+
+- Fix issue where arguments of throwable leaked
+
 ## 1.5.2 - 2023-06-28
 
 - Another type update
