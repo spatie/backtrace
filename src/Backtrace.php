@@ -16,7 +16,7 @@ class Backtrace
     /** @var bool */
     protected $reduceArguments = false;
 
-    /** @var array<ArgumentReducer>|ArgumentReducers|null */
+    /** @var array<class-string<ArgumentReducer>|ArgumentReducer>|ArgumentReducers|null */
     protected $argumentReducers = null;
 
     /** @var bool */
