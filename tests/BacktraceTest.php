@@ -68,7 +68,8 @@ class BacktraceTest extends TestCase
             new DateTime(),
         );
 
-        $this->assertNull(Backtrace::createForThrowable($exception)
+        $this->assertNull(
+            Backtrace::createForThrowable($exception)
             ->withArguments(false)
             ->frames()[1]
             ->arguments
