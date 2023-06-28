@@ -256,11 +256,11 @@ class Backtrace
 
     protected function resolveArgumentReducers(): ArgumentReducers
     {
-        if($this->argumentReducers === null){
+        if($this->argumentReducers === null) {
             return ArgumentReducers::default();
         }
 
-        if($this->argumentReducers instanceof ArgumentReducers){
+        if($this->argumentReducers instanceof ArgumentReducers) {
             return $this->argumentReducers;
         }
 
