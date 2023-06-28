@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.5.1 - 2023-06-28
+
+- Type update
+
 ## 1.5.0 - 2023-06-28
 
 - Add support for reducing stack trace arguments (#16)
