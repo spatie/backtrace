@@ -221,11 +221,7 @@ class Backtrace
             $relativeFile = array_reverse(explode($this->applicationPath ?? '', $frameFilename, 2))[0];
         }
 
-        if (strpos($relativeFile, DIRECTORY_SEPARATOR.'vendor') === 0) {
-            return false;
-        }
-
-        return true;
+        return (bool) strpos($relativeFile, DIRECTORY_SEPARATOR.'vendor');
     }
 
     protected function removeBacktracePackageFrames(array $frames): array
