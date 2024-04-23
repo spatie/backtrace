@@ -275,7 +275,6 @@ EOT,
         $this->assertEquals(realpath(__DIR__.'/../tests/TestClasses/LaravelSerializableClosureCallThrow.php'), $firstFrame->file);
         $this->assertTrue($firstFrame->applicationFrame);
 
-
         /** @var Frame $secondFrame */
         $secondFrame = $frames[1];
 
