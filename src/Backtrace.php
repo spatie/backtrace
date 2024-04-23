@@ -174,7 +174,7 @@ class Backtrace
         foreach ($rawFrames as $rawFrame) {
             $snippet = null;
 
-            if (str_starts_with($currentFile, ClosureStream::STREAM_PROTO)) {
+            if (substr($currentFile, 0, strlen(ClosureStream::STREAM_PROTO)) === ClosureStream::STREAM_PROTO) {
                 $snippet = $currentFile;
                 $currentFile = ClosureStream::STREAM_PROTO.'://function()';
                 $currentLine -= 1;
