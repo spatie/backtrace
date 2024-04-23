@@ -6,12 +6,12 @@ use Exception;
 use Laravel\SerializableClosure\SerializableClosure;
 use Throwable;
 
-class LaravelSerializeableClosureThrow
+class LaravelSerializableClosureCallThrow
 {
     public static function getThrowable(): Throwable
     {
         $closure = function () {
-            throw new Exception('This is a test exception from a serialized closure');
+            self::throw();
         };
 
         $serialized = serialize(new SerializableClosure($closure));
@@ -22,5 +22,10 @@ class LaravelSerializeableClosureThrow
         } catch (Throwable $exception) {
             return $exception;
         }
+    }
+
+    public static function throw()
+    {
+        throw new Exception('This is a test exception from a serialized closure');
     }
 }
