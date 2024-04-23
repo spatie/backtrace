@@ -2,10 +2,6 @@
 
 namespace Spatie\Backtrace\Tests;
 
-use Exception;
-use Laravel\SerializableClosure\SerializableClosure;
-use Spatie\Backtrace\Backtrace;
-use Spatie\Backtrace\ClosureProducer;
 use Spatie\Backtrace\CodeSnippets\CodeSnippet;
 use Spatie\Backtrace\CodeSnippets\FileSnippetProvider;
 use Spatie\Backtrace\CodeSnippets\NullSnippetProvider;

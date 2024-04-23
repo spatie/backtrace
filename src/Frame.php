@@ -85,11 +85,11 @@ class Frame
 
     protected function getCodeSnippetProvider(): SnippetProvider
     {
-        if($this->snippet){
+        if($this->snippet) {
             return new LaravelSerializableClosureSnippetProvider($this->snippet);
         }
 
-        if(file_exists($this->file)){
+        if(file_exists($this->file)) {
             return new FileSnippetProvider($this->file);
         }
 

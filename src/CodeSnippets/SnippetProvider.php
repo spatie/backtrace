@@ -2,8 +2,6 @@
 
 namespace Spatie\Backtrace\CodeSnippets;
 
-use SplFileObject;
-
 interface SnippetProvider
 {
     public function numberOfLines(): int;

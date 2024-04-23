@@ -240,7 +240,8 @@ class BacktraceTest extends TestCase
 
         $firstFrameSnippet = $firstFrame->getSnippetAsString(5);
 
-        $this->assertEquals(<<<'EOT'
+        $this->assertEquals(
+            <<<'EOT'
 1 laravel-serializable-closure://function () {
 2     throw new \Exception('This is a test exception from a serialized closure');
 3 }
