@@ -172,10 +172,10 @@ class Backtrace
         $reduceArgumentsAction = new ReduceArgumentsAction($this->resolveArgumentReducers());
 
         foreach ($rawFrames as $rawFrame) {
-            $snippet = null;
+            $textSnippet = null;
 
             if (substr($currentFile, 0, strlen(ClosureStream::STREAM_PROTO)) === ClosureStream::STREAM_PROTO) {
-                $snippet = $currentFile;
+                $textSnippet = $currentFile;
                 $currentFile = ClosureStream::STREAM_PROTO.'://function()';
                 $currentLine -= 1;
             }
@@ -187,7 +187,7 @@ class Backtrace
                 $rawFrame['function'] ?? null,
                 $rawFrame['class'] ?? null,
                 $this->isApplicationFrame($currentFile),
-                $snippet
+                $textSnippet
             );
 
             $frames[] = $frame;
