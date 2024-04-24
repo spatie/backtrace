@@ -29,7 +29,7 @@ class Frame
     public $class;
 
     /** @var string|null */
-    protected $snippet;
+    protected $textSnippet;
 
     public function __construct(
         string $file,
@@ -52,10 +52,10 @@ class Frame
 
         $this->applicationFrame = $isApplicationFrame;
 
-        $this->snippet = $snippet;
+        $this->textSnippet = $snippet;
     }
 
-    public function getSnippet(int $lineCount): array
+    public function getTextSnippet(int $lineCount): array
     {
         return (new CodeSnippet())
             ->surroundingLine($this->lineNumber)
@@ -73,7 +73,7 @@ class Frame
 
     public function getSnippetProperties(int $lineCount): array
     {
-        $snippet = $this->getSnippet($lineCount);
+        $snippet = $this->getTextSnippet($lineCount);
 
         return array_map(function (int $lineNumber) use ($snippet) {
             return [
@@ -85,8 +85,8 @@ class Frame
 
     protected function getCodeSnippetProvider(): SnippetProvider
     {
-        if($this->snippet) {
-            return new LaravelSerializableClosureSnippetProvider($this->snippet);
+        if($this->textSnippet) {
+            return new LaravelSerializableClosureSnippetProvider($this->textSnippet);
         }
 
         if(file_exists($this->file)) {
