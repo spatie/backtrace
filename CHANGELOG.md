@@ -2,6 +2,14 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.6.0 - 2024-04-24
+
+### What's Changed
+
+* Serializeable closure support by @rubenvanassche in https://github.com/spatie/backtrace/pull/23
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.5.3...1.6.0
+
 ## 1.5.3 - 2023-06-28
 
 - Fix issue where arguments of throwable leaked
