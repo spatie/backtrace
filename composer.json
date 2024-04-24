@@ -16,13 +16,13 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0"
+        "php": "^7.3|^8.0",
+        "laravel/serializable-closure": "^1.3"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^9.3",
         "spatie/phpunit-snapshot-assertions": "^4.2",
-        "laravel/serializable-closure": "^1.3",
         "symfony/var-dumper": "^5.1"
     },
     "autoload": {
