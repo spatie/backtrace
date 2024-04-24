@@ -143,7 +143,7 @@ class BacktraceTest extends TestCase
         /** @var \Spatie\Backtrace\Frame $firstFrame */
         $firstFrame = Backtrace::create()->frames()[0];
 
-        $snippet = $firstFrame->getTextSnippet(5);
+        $snippet = $firstFrame->getSnippet(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[__LINE__ - 4]);
         $this->assertCount(5, $snippet);

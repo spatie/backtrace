@@ -38,7 +38,7 @@ class Frame
         string $method = null,
         string $class = null,
         bool $isApplicationFrame = false,
-        ?string $snippet = null
+        ?string $textSnippet = null
     ) {
         $this->file = $file;
 
@@ -52,10 +52,10 @@ class Frame
 
         $this->applicationFrame = $isApplicationFrame;
 
-        $this->textSnippet = $snippet;
+        $this->textSnippet = $textSnippet;
     }
 
-    public function getTextSnippet(int $lineCount): array
+    public function getSnippet(int $lineCount): array
     {
         return (new CodeSnippet())
             ->surroundingLine($this->lineNumber)
@@ -73,7 +73,7 @@ class Frame
 
     public function getSnippetProperties(int $lineCount): array
     {
-        $snippet = $this->getTextSnippet($lineCount);
+        $snippet = $this->getSnippet($lineCount);
 
         return array_map(function (int $lineNumber) use ($snippet) {
             return [
