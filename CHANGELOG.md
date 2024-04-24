@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.6.1 - 2024-04-24
+
+- Add check wether serializable closure is defined
+
 ## 1.6.0 - 2024-04-24
 
 ### What's Changed
