@@ -8,6 +8,8 @@ use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
 use Spatie\Backtrace\Tests\TestClasses\FakeArgumentReducer;
+use Spatie\Backtrace\Tests\TestClasses\LaravelSerializableClosureCallThrow;
+use Spatie\Backtrace\Tests\TestClasses\LaravelSerializableClosureThrow;
 use Spatie\Backtrace\Tests\TestClasses\ThrowAndReturnExceptionAction;
 use Spatie\Backtrace\Tests\TestClasses\TraceArguments;
 
@@ -70,9 +72,9 @@ class BacktraceTest extends TestCase
 
         $this->assertNull(
             Backtrace::createForThrowable($exception)
-            ->withArguments(false)
-            ->frames()[1]
-            ->arguments
+                ->withArguments(false)
+                ->frames()[1]
+                ->arguments
         );
     }
 
@@ -157,7 +159,7 @@ class BacktraceTest extends TestCase
         $snippet = $firstFrame->getSnippetProperties(5);
 
         $this->assertStringContainsString('$firstFrame =', $snippet[2]['text']);
-        $this->assertEquals(154, $snippet[2]['line_number']);
+        $this->assertEquals(__LINE__ - 5, $snippet[2]['line_number']);
     }
 
     /** @test */
@@ -218,6 +220,79 @@ class BacktraceTest extends TestCase
         $this->assertEquals(13, $firstFrame->lineNumber);
         $this->assertEquals(ThrowAndReturnExceptionAction::class, $firstFrame->class);
         $this->assertEquals('getThrowable', $firstFrame->method);
+    }
+
+    /** @test */
+    public function it_can_handle_a_laravel_serializable_closure_via_throwable()
+    {
+        if (version_compare(PHP_VERSION, '8.1', '<')) {
+            $this->markTestSkipped('Enums are only supported in PHP 8.1+');
+        }
+
+        $throwable = LaravelSerializableClosureThrow::getThrowable();
+
+        $frames = Backtrace::createForThrowable($throwable)->frames();
+
+        $this->assertGreaterThan(10, count($frames));
+
+        /** @var Frame $firstFrame */
+        $firstFrame = $frames[0];
+
+        $this->assertEquals(2, $firstFrame->lineNumber);
+        $this->assertEquals('{closure}', $firstFrame->method);
+        $this->assertEquals(LaravelSerializableClosureThrow::class, $firstFrame->class);
+        $this->assertTrue($firstFrame->applicationFrame);
+
+        $firstFrameSnippet = $firstFrame->getSnippetAsString(5);
+
+        $this->assertEquals(
+            <<<'EOT'
+1 laravel-serializable-closure://function () {
+2     throw new \Exception('This is a test exception from a serialized closure');
+3 }
+EOT,
+            $firstFrameSnippet
+        );
+    }
+
+    /** @test */
+    public function it_can_handle_a_laravel_serializable_closure_via_call_throwable()
+    {
+        if (version_compare(PHP_VERSION, '8.1', '<')) {
+            $this->markTestSkipped('Enums are only supported in PHP 8.1+');
+        }
+
+        $throwable = LaravelSerializableClosureCallThrow::getThrowable();
+
+        $frames = Backtrace::createForThrowable($throwable)->frames();
+
+        /** @var Frame $firstFrame */
+        $firstFrame = $frames[0];
+
+        $this->assertEquals(29, $firstFrame->lineNumber);
+        $this->assertEquals('throw', $firstFrame->method);
+        $this->assertEquals(LaravelSerializableClosureCallThrow::class, $firstFrame->class);
+        $this->assertEquals(realpath(__DIR__.'/../tests/TestClasses/LaravelSerializableClosureCallThrow.php'), $firstFrame->file);
+        $this->assertTrue($firstFrame->applicationFrame);
+
+        /** @var Frame $secondFrame */
+        $secondFrame = $frames[1];
+
+        $this->assertEquals(2, $secondFrame->lineNumber);
+        $this->assertEquals('{closure}', $secondFrame->method);
+        $this->assertEquals(LaravelSerializableClosureCallThrow::class, $secondFrame->class);
+        $this->assertTrue($secondFrame->applicationFrame);
+
+        $secondFrameSnippet = $secondFrame->getSnippetAsString(5);
+
+        $this->assertEquals(
+            <<<'EOT'
+1 laravel-serializable-closure://function () {
+2     self::throw();
+3 }
+EOT,
+            $secondFrameSnippet
+        );
     }
 
     /** @test */

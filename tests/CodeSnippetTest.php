@@ -2,7 +2,9 @@
 
 namespace Spatie\Backtrace\Tests;
 
-use Spatie\Backtrace\CodeSnippet;
+use Spatie\Backtrace\CodeSnippets\CodeSnippet;
+use Spatie\Backtrace\CodeSnippets\FileSnippetProvider;
+use Spatie\Backtrace\CodeSnippets\NullSnippetProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class CodeSnippetTest extends TestCase
@@ -10,7 +12,7 @@ class CodeSnippetTest extends TestCase
     use MatchesSnapshots;
 
     /** @test */
-    public function it_can_get_the_code_snippet_as_a_string()
+    public function it_can_get_a_file_code_snippet_as_a_string()
     {
         if ($this->runningOnWindows()) {
             $this->markAsSucceeded();
@@ -21,7 +23,24 @@ class CodeSnippetTest extends TestCase
         $snippetString = (new CodeSnippet())
             ->snippetLineCount(15)
             ->surroundingLine(10)
-            ->getAsString(__DIR__ . '/TestClasses/TestClass.php');
+            ->getAsString(new FileSnippetProvider(__DIR__.'/TestClasses/TestClass.php'));
+
+        $this->assertMatchesTextSnapshot($snippetString);
+    }
+
+    /** @test */
+    public function it_can_get_a_null_code_snippet_as_a_string()
+    {
+        if ($this->runningOnWindows()) {
+            $this->markAsSucceeded();
+
+            return;
+        }
+
+        $snippetString = (new CodeSnippet())
+            ->snippetLineCount(15)
+            ->surroundingLine(10)
+            ->getAsString(new NullSnippetProvider());
 
         $this->assertMatchesTextSnapshot($snippetString);
     }

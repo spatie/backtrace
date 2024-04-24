@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Backtrace;
+namespace Spatie\Backtrace\CodeSnippets;
 
 use RuntimeException;
 
@@ -26,27 +26,21 @@ class CodeSnippet
         return $this;
     }
 
-    public function get(string $fileName): array
+    public function get(SnippetProvider $provider): array
     {
-        if (! file_exists($fileName)) {
-            return [];
-        }
-
         try {
-            $file = new File($fileName);
-
-            [$startLineNumber, $endLineNumber] = $this->getBounds($file->numberOfLines());
+            [$startLineNumber, $endLineNumber] = $this->getBounds($provider->numberOfLines());
 
             $code = [];
 
-            $line = $file->getLine($startLineNumber);
+            $line = $provider->getLine($startLineNumber);
 
             $currentLineNumber = $startLineNumber;
 
             while ($currentLineNumber <= $endLineNumber) {
                 $code[$currentLineNumber] = rtrim(substr($line, 0, 250));
 
-                $line = $file->getNextLine();
+                $line = $provider->getNextLine();
                 $currentLineNumber++;
             }
 
@@ -56,9 +50,9 @@ class CodeSnippet
         }
     }
 
-    public function getAsString(string $fileName): string
+    public function getAsString(SnippetProvider $provider): string
     {
-        $snippet = $this->get($fileName);
+        $snippet = $this->get($provider);
 
         $snippetStrings = array_map(function (string $line, string $number) {
             return "{$number} {$line}";
