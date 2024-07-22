@@ -2,6 +2,20 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.6.2 - 2024-07-22
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/spatie/backtrace/pull/24
+* Bump dependabot/fetch-metadata from 2.1.0 to 2.2.0 by @dependabot in https://github.com/spatie/backtrace/pull/25
+* Correct with object check by @1RV34 in https://github.com/spatie/backtrace/pull/22
+
+### New Contributors
+
+* @1RV34 made their first contribution in https://github.com/spatie/backtrace/pull/22
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.6.1...1.6.2
+
 ## 1.6.1 - 2024-04-24
 
 - Add check wether serializable closure is defined
