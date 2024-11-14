@@ -13,6 +13,9 @@ class Frame
     /** @var string */
     public $file;
 
+    /** @var string|null */
+    public $trimmedFile;
+
     /** @var int */
     public $lineNumber;
 
@@ -33,6 +36,7 @@ class Frame
 
     public function __construct(
         string $file,
+        ?string $trimmedFile = null,
         int $lineNumber,
         ?array $arguments,
         string $method = null,
@@ -41,6 +45,8 @@ class Frame
         ?string $textSnippet = null
     ) {
         $this->file = $file;
+
+        $this->trimmedFile = $trimmedFile;
 
         $this->lineNumber = $lineNumber;
 

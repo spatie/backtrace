@@ -23,6 +23,9 @@ class Backtrace
     /** @var bool */
     protected $withObject = false;
 
+    /** @var bool */
+    protected $trimFilePaths = false;
+
     /** @var string|null */
     protected $applicationPath;
 
@@ -87,6 +90,13 @@ class Backtrace
     public function applicationPath(string $applicationPath): self
     {
         $this->applicationPath = rtrim($applicationPath, '/');
+
+        return $this;
+    }
+
+    public function trimFilePaths(): self
+    {
+        $this->trimFilePaths = true;
 
         return $this;
     }
@@ -183,8 +193,13 @@ class Backtrace
                 $currentLine -= 1;
             }
 
+            if ($this->trimFilePaths && $this->applicationPath) {
+                $trimmedFile = str_replace($this->applicationPath, '', $currentFile);
+            }
+
             $frame = new Frame(
                 $currentFile,
+                $trimmedFile ?? null,
                 $currentLine,
                 $arguments,
                 $rawFrame['function'] ?? null,
@@ -213,6 +228,7 @@ class Backtrace
 
         $frames[] = new Frame(
             $currentFile,
+            null,
             $currentLine,
             [],
             '[top]'
