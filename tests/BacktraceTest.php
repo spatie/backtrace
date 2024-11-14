@@ -306,7 +306,7 @@ EOT,
     {
         $this->assertEquals(DIRECTORY_SEPARATOR.basename(self::class).'.php', Backtrace::create()->applicationPath(__DIR__)->trimFilePaths()->frames()[0]->trimmedFile);
     }
-    
+
     /** @test */
     public function it_does_not_trim_file_path_if_no_application_path_set()
     {
