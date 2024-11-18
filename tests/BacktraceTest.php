@@ -315,5 +315,4 @@ EOT,
     {
         $this->assertNull(Backtrace::create()->trimFilePaths()->frames()[0]->trimmedFilePath);
     }
-
 }
