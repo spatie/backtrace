@@ -13,6 +13,9 @@ class Frame
     /** @var string */
     public $file;
 
+    /** @var string|null */
+    public $trimmedFilePath;
+
     /** @var int */
     public $lineNumber;
 
@@ -38,9 +41,12 @@ class Frame
         string $method = null,
         string $class = null,
         bool $isApplicationFrame = false,
-        ?string $textSnippet = null
+        ?string $textSnippet = null,
+        ?string $trimmedFilePath = null
     ) {
         $this->file = $file;
+
+        $this->trimmedFilePath = $trimmedFilePath;
 
         $this->lineNumber = $lineNumber;
 
