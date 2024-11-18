@@ -196,16 +196,15 @@ class Backtrace
             if ($this->trimFilePaths && $this->applicationPath) {
                 $trimmedFile = str_replace($this->applicationPath, '', $currentFile);
             }
-
             $frame = new Frame(
                 $currentFile,
-                $trimmedFile ?? null,
                 $currentLine,
                 $arguments,
                 $rawFrame['function'] ?? null,
                 $rawFrame['class'] ?? null,
                 $this->isApplicationFrame($currentFile),
-                $textSnippet
+                $textSnippet,
+                $trimmedFile ?? null,
             );
 
             $frames[] = $frame;
@@ -228,7 +227,6 @@ class Backtrace
 
         $frames[] = new Frame(
             $currentFile,
-            null,
             $currentLine,
             [],
             '[top]'

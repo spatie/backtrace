@@ -36,13 +36,13 @@ class Frame
 
     public function __construct(
         string $file,
-        ?string $trimmedFile = null,
         int $lineNumber,
         ?array $arguments,
         string $method = null,
         string $class = null,
         bool $isApplicationFrame = false,
-        ?string $textSnippet = null
+        ?string $textSnippet = null,
+        ?string $trimmedFile = null,
     ) {
         $this->file = $file;
 

@@ -4,6 +4,7 @@ namespace Spatie\Backtrace\Tests;
 
 use DateTime;
 use PHPUnit\Framework\TestSuite;
+use ReflectionClass;
 use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
@@ -304,7 +305,9 @@ EOT,
     /** @test */
     public function it_trims_file_path_if_application_path_set()
     {
-        $this->assertEquals(DIRECTORY_SEPARATOR.basename(self::class).'.php', Backtrace::create()->applicationPath(__DIR__)->trimFilePaths()->frames()[0]->trimmedFile);
+        $className = (new ReflectionClass(self::class))->getShortName();
+
+        $this->assertEquals(DIRECTORY_SEPARATOR.$className.'.php', Backtrace::create()->applicationPath(__DIR__)->trimFilePaths()->frames()[0]->trimmedFile);
     }
 
     /** @test */
