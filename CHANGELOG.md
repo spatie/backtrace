@@ -2,6 +2,18 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.6.3 - 2024-11-18
+
+### What's Changed
+
+* trimFilePaths feature  by @jackbayliss in https://github.com/spatie/backtrace/pull/26
+
+### New Contributors
+
+* @jackbayliss made their first contribution in https://github.com/spatie/backtrace/pull/26
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.6.2...1.6.3
+
 ## 1.6.2 - 2024-07-22
 
 ### What's Changed
