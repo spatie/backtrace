@@ -307,13 +307,13 @@ EOT,
     {
         $className = (new ReflectionClass(self::class))->getShortName();
 
-        $this->assertEquals(DIRECTORY_SEPARATOR.$className.'.php', Backtrace::create()->applicationPath(__DIR__)->trimFilePaths()->frames()[0]->trimmedFile);
+        $this->assertEquals(DIRECTORY_SEPARATOR.$className.'.php', Backtrace::create()->applicationPath(__DIR__)->trimFilePaths()->frames()[0]->trimmedFilePath);
     }
 
     /** @test */
     public function it_does_not_trim_file_path_if_no_application_path_set()
     {
-        $this->assertNull(Backtrace::create()->trimFilePaths()->frames()[0]->trimmedFile);
+        $this->assertNull(Backtrace::create()->trimFilePaths()->frames()[0]->trimmedFilePath);
     }
 
 }

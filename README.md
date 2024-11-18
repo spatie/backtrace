@@ -125,7 +125,7 @@ $backtrace = Spatie\Backtrace\Backtrace::create()->applicationPath(base_path());
 ```
 ### Removing the application path from the file name
 
-You can use `trimFilePaths` to remove the base path of your app from the file. This will only work if you use it in conjunction the `applicationPath` method re above. Here's an example using a Laravel specific function. This will ensure the Frame has the trimmedFile property set.
+You can use `trimFilePaths` to remove the base path of your app from the file. This will only work if you use it in conjunction the `applicationPath` method re above. Here's an example using a Laravel specific function. This will ensure the Frame has the trimmedFilePath property set.
 
 ```php
 $backtrace = Backtrace::create()->applicationPath(base_path())->trimFilePaths());
