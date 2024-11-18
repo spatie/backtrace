@@ -42,7 +42,7 @@ class Frame
         string $class = null,
         bool $isApplicationFrame = false,
         ?string $textSnippet = null,
-        ?string $trimmedFilePath = null,
+        ?string $trimmedFilePath = null
     ) {
         $this->file = $file;
 
