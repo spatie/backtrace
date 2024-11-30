@@ -243,7 +243,7 @@ class BacktraceTest extends TestCase
 
         if (version_compare(PHP_VERSION, '8.4', '>=')) {
             $this->assertEquals(
-            <<<'EOT'
+                <<<'EOT'
 {closure:laravel-serializable-closure://function () {
             throw new \Exception('This is a test exception from a serialized closure');
         }:2}
@@ -296,7 +296,7 @@ EOT,
 
         if (version_compare(PHP_VERSION, '8.4', '>=')) {
             $this->assertEquals(
-            <<<'EOT'
+                <<<'EOT'
 {closure:laravel-serializable-closure://function () {
             self::throw();
         }:2}
