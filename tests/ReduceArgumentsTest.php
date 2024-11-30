@@ -61,7 +61,7 @@ class ReduceArgumentsTest extends TestCase
         );
     }
 
-    public function reduceableFramesDataSet()
+    public static function reduceableFramesDataSet()
     {
         yield 'without arguments' => [
             TraceArguments::create()->withoutArguments(),
@@ -566,7 +566,7 @@ class ReduceArgumentsTest extends TestCase
         $this->assertEquals($expected, $argument->toArray());
     }
 
-    public function providedArgumentsDataSet()
+    public static function providedArgumentsDataSet()
     {
         yield 'base' => [
             ProvidedArgumentFactory::create('string')

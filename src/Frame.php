@@ -38,8 +38,8 @@ class Frame
         string $file,
         int $lineNumber,
         ?array $arguments,
-        string $method = null,
-        string $class = null,
+        ?string $method = null,
+        ?string $class = null,
         bool $isApplicationFrame = false,
         ?string $textSnippet = null,
         ?string $trimmedFilePath = null
