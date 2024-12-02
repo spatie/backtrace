@@ -2,6 +2,18 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.7.0 - 2024-12-02
+
+### What's Changed
+
+* Add PHP 8.4 Support by @sweptsquash in https://github.com/spatie/backtrace/pull/27
+
+### New Contributors
+
+* @sweptsquash made their first contribution in https://github.com/spatie/backtrace/pull/27
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.6.3...1.7.0
+
 ## 1.6.3 - 2024-11-18
 
 ### What's Changed
