@@ -9,7 +9,7 @@ class NullSnippetProvider implements SnippetProvider
         return 1;
     }
 
-    public function getLine(int $lineNumber = null): string
+    public function getLine(?int $lineNumber = null): string
     {
         return $this->getNextLine();
     }

@@ -22,7 +22,7 @@ class LaravelSerializableClosureSnippetProvider implements SnippetProvider
         return count($this->lines);
     }
 
-    public function getLine(int $lineNumber = null): string
+    public function getLine(?int $lineNumber = null): string
     {
         if (is_null($lineNumber)) {
             return $this->getNextLine();

@@ -21,7 +21,7 @@ class FileSnippetProvider implements SnippetProvider
         return $this->file->key() + 1;
     }
 
-    public function getLine(int $lineNumber = null): string
+    public function getLine(?int $lineNumber = null): string
     {
         if (is_null($lineNumber)) {
             return $this->getNextLine();
