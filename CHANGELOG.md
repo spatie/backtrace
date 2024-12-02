@@ -2,6 +2,12 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.7.1 - 2024-12-02
+
+- fix deprecation message
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.7.0...1.7.1
+
 ## 1.7.0 - 2024-12-02
 
 ### What's Changed
