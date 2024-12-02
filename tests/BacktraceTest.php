@@ -240,7 +240,20 @@ class BacktraceTest extends TestCase
         $firstFrame = $frames[0];
 
         $this->assertEquals(2, $firstFrame->lineNumber);
-        $this->assertEquals('{closure}', $firstFrame->method);
+
+        if (version_compare(PHP_VERSION, '8.4', '>=')) {
+            $this->assertEquals(
+                <<<'EOT'
+{closure:laravel-serializable-closure://function () {
+            throw new \Exception('This is a test exception from a serialized closure');
+        }:2}
+EOT,
+                $firstFrame->method
+            );
+        } else {
+            $this->assertEquals('{closure}', $firstFrame->method);
+        }
+
         $this->assertEquals(LaravelSerializableClosureThrow::class, $firstFrame->class);
         $this->assertTrue($firstFrame->applicationFrame);
 
@@ -280,7 +293,20 @@ EOT,
         $secondFrame = $frames[1];
 
         $this->assertEquals(2, $secondFrame->lineNumber);
-        $this->assertEquals('{closure}', $secondFrame->method);
+
+        if (version_compare(PHP_VERSION, '8.4', '>=')) {
+            $this->assertEquals(
+                <<<'EOT'
+{closure:laravel-serializable-closure://function () {
+            self::throw();
+        }:2}
+EOT,
+                $secondFrame->method
+            );
+        } else {
+            $this->assertEquals('{closure}', $secondFrame->method);
+        }
+
         $this->assertEquals(LaravelSerializableClosureCallThrow::class, $secondFrame->class);
         $this->assertTrue($secondFrame->applicationFrame);
 
