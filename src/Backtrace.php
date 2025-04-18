@@ -80,9 +80,9 @@ class Backtrace
         return $this;
     }
 
-    public function withObject(): self
+    public function withObject(bool $withObject = true): self
     {
-        $this->withObject = true;
+        $this->withObject = $withObject;
 
         return $this;
     }
