@@ -31,6 +31,9 @@ class Frame
     /** @var string|null */
     public $class;
 
+    /** @var object|null */
+    public $object;
+
     /** @var string|null */
     protected $textSnippet;
 
@@ -40,6 +43,7 @@ class Frame
         ?array $arguments,
         ?string $method = null,
         ?string $class = null,
+        ?object $object = null,
         bool $isApplicationFrame = false,
         ?string $textSnippet = null,
         ?string $trimmedFilePath = null
@@ -55,6 +59,8 @@ class Frame
         $this->method = $method;
 
         $this->class = $class;
+
+        $this->object = $object;
 
         $this->applicationFrame = $isApplicationFrame;
 

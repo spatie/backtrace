@@ -202,6 +202,7 @@ class Backtrace
                 $arguments,
                 $rawFrame['function'] ?? null,
                 $rawFrame['class'] ?? null,
+                $rawFrame['object'] ?? null,
                 $this->isApplicationFrame($currentFile),
                 $textSnippet,
                 $trimmedFilePath ?? null,
