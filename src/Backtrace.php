@@ -149,12 +149,15 @@ class Backtrace
             return $this->throwable->getTrace();
         }
 
-        $options = 0;
+        // Omit arguments and object
+        $options = DEBUG_BACKTRACE_IGNORE_ARGS;
 
-        if (! $this->withArguments) {
-            $options = $options | DEBUG_BACKTRACE_IGNORE_ARGS;
+        // Populate arguments
+        if ($this->withArguments) {
+            $options = 0;
         }
 
+        // Populate object
         if ($this->withObject) {
             $options = $options | DEBUG_BACKTRACE_PROVIDE_OBJECT;
         }
