@@ -80,6 +80,37 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_enable_the_use_of_arguments_with_a_backtrace()
+    {
+        function createBackTraceWithArguments(string $string): array
+        {
+            return Backtrace::create()
+                ->withArguments()
+                ->frames();
+        }
+
+        $frames = createBackTraceWithArguments('Hello World');
+
+        $this->assertIsArray($frames[1]->arguments);
+    }
+
+    /** @test */
+    public function it_can_enable_the_use_of_arguments_with_a_throwable()
+    {
+        $exception = TraceArguments::create()->exception(
+            'Hello World',
+            new DateTime(),
+        );
+
+        $this->assertIsArray(
+            Backtrace::createForThrowable($exception)
+                ->withArguments()
+                ->frames()[1]
+                ->arguments
+        );
+    }
+
+    /** @test */
     public function it_can_get_add_the_arguments_reduced()
     {
         function createBackTrace(string $test, bool $withArguments): Frame
