@@ -33,7 +33,7 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_add_the_arguments()
+    public function it_can_get_add_the_arguments_with_a_backtrace()
     {
         /** @var \Spatie\Backtrace\Frame $firstFrame */
         $firstFrame = Backtrace::create()->frames()[0];
@@ -46,6 +46,22 @@ class BacktraceTest extends TestCase
             ->frames()[0];
 
         $this->assertIsArray($firstFrame->arguments);
+    }
+
+    /** @test */
+    public function it_can_get_add_the_arguments_with_a_throwable()
+    {
+        $exception = TraceArguments::create()->exception(
+            'Hello World',
+            new DateTime(),
+        );
+
+        $this->assertIsArray(
+            Backtrace::createForThrowable($exception)
+                ->withArguments()
+                ->frames()[1]
+                ->arguments
+        );
     }
 
     /** @test */
@@ -74,37 +90,6 @@ class BacktraceTest extends TestCase
         $this->assertNull(
             Backtrace::createForThrowable($exception)
                 ->withArguments(false)
-                ->frames()[1]
-                ->arguments
-        );
-    }
-
-    /** @test */
-    public function it_can_enable_the_use_of_arguments_with_a_backtrace()
-    {
-        function createBackTraceWithArguments(string $string): array
-        {
-            return Backtrace::create()
-                ->withArguments()
-                ->frames();
-        }
-
-        $frames = createBackTraceWithArguments('Hello World');
-
-        $this->assertIsArray($frames[1]->arguments);
-    }
-
-    /** @test */
-    public function it_can_enable_the_use_of_arguments_with_a_throwable()
-    {
-        $exception = TraceArguments::create()->exception(
-            'Hello World',
-            new DateTime(),
-        );
-
-        $this->assertIsArray(
-            Backtrace::createForThrowable($exception)
-                ->withArguments()
                 ->frames()[1]
                 ->arguments
         );
