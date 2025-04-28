@@ -80,6 +80,90 @@ class BacktraceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_add_the_object()
+    {
+        $firstFrame = Backtrace::create()->frames()[0];
+
+        $this->assertNull($firstFrame->object);
+
+        $firstFrame = Backtrace::create()
+            ->withObject()
+            ->frames()[0];
+
+        $this->assertIsObject($firstFrame->object);
+    }
+
+    /** @test */
+    public function it_can_disable_the_use_of_the_object_with_a_backtrace()
+    {
+        /** @return \Spatie\Backtrace\Frame[] */
+        function createBackTraceWithoutObject(): array
+        {
+            return Backtrace::create()
+                ->withObject(false)
+                ->frames();
+        }
+
+        $frames = createBackTraceWithoutObject();
+
+        $this->assertNull($frames[1]->object);
+    }
+
+    /** @test */
+    public function it_can_disable_the_use_of_arguments_and_enable_the_use_of_the_object_with_a_backtrace()
+    {
+        /** @return \Spatie\Backtrace\Frame[] */
+        function createBackTraceWithoutArgumentsAndWithObject(string $string): array
+        {
+            return Backtrace::create()
+                ->withArguments(false)
+                ->withObject()
+                ->frames();
+        }
+
+        $frames = createBackTraceWithoutArgumentsAndWithObject('Hello World');
+
+        $this->assertNull($frames[1]->arguments);
+        $this->assertIsObject($frames[1]->object);
+    }
+
+    /** @test */
+    public function it_can_enable_the_use_of_arguments_and_disable_the_use_of_the_object_with_a_backtrace()
+    {
+        /** @return \Spatie\Backtrace\Frame[] */
+        function createBackTraceWithArgumentsAndWithoutObject(string $string): array
+        {
+            return Backtrace::create()
+                ->withArguments()
+                ->withObject(false)
+                ->frames();
+        }
+
+        $frames = createBackTraceWithArgumentsAndWithoutObject('Hello World');
+
+        $this->assertIsArray($frames[1]->arguments);
+        $this->assertNull($frames[1]->object);
+    }
+
+    /** @test */
+    public function it_can_enable_the_use_of_arguments_and_the_object_with_a_backtrace()
+    {
+        /** @return \Spatie\Backtrace\Frame[] */
+        function createBackTraceWithArgumentsAndObject(string $string): array
+        {
+            return Backtrace::create()
+                ->withArguments()
+                ->withObject()
+                ->frames();
+        }
+
+        $frames = createBackTraceWithArgumentsAndObject('Hello World');
+
+        $this->assertIsArray($frames[1]->arguments);
+        $this->assertIsObject($frames[1]->object);
+    }
+
+    /** @test */
     public function it_can_get_add_the_arguments_reduced()
     {
         function createBackTrace(string $test, bool $withArguments): Frame
