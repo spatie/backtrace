@@ -177,8 +177,8 @@ $frames = Spatie\Backtrace\Backtrace::createForThrowable($throwable)
 ```
 
 Because we will use the backtrace that is already available in the throwable, the frames will contain the arguments used
-in the backtrace as long as the `zend.exception_ignore_args` INI option is set *before* the throwable is thrown.
-On the other hand, objects will never be included in the backtrace. 
+in the backtrace as long as the `zend.exception_ignore_args` INI option is disabled (set to `0`) *before* the throwable
+is thrown. On the other hand, objects will never be included in the backtrace. 
 [More information](https://www.php.net/manual/en/throwable.gettrace.php#129087).
 
 ## Testing
