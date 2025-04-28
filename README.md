@@ -62,16 +62,17 @@ A `Spatie\Backtrace\Frame` has these properties:
 - `arguments`: the arguments used for this frame. Will be `null` if `withArguments` was not used.
 - `class`: the class name for this frame. Will be `null` if the frame concerns a function.
 - `method`: the method used in this frame
+- `object`: the object when the frame is in an object context (method call, closure bound to object, arrow function which captured `$this`, etc.). Will be `null` if `withObject` was not used.
 - `applicationFrame`: contains `true` is this frame belongs to your application, and `false` if it belongs to a file in
   the vendor directory
 
-### Collecting arguments
+### Collecting arguments and objects
 
-For performance reasons, the frames of the back trace will not contain the arguments of the called functions. If you
-want to add those use the `withArguments` method.
+For performance reasons, the frames of the back trace will not contain the arguments of the called functions and the
+object. If you want to add those, use the `withArguments` and `withObject` methods.
 
 ```php
-$backtrace = Spatie\Backtrace\Backtrace::create()->withArguments();
+$backtrace = Spatie\Backtrace\Backtrace::create()->withArguments()->withObject();
 ```
 
 #### Reducing arguments
