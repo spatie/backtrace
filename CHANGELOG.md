@@ -2,6 +2,20 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.7.2 - 2025-04-28
+
+### What's Changed
+
+* Update README.md by @jackbayliss in https://github.com/spatie/backtrace/pull/28
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/spatie/backtrace/pull/29
+* Add object property to frame by @jivanf in https://github.com/spatie/backtrace/pull/30
+
+### New Contributors
+
+* @jivanf made their first contribution in https://github.com/spatie/backtrace/pull/30
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.7.1...1.7.2
+
 ## 1.7.1 - 2024-12-02
 
 - fix deprecation message
