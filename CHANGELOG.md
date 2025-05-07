@@ -2,6 +2,14 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.7.3 - 2025-05-07
+
+### What's Changed
+
+* Add test for enabling arguments with a throwable by @jivanf in https://github.com/spatie/backtrace/pull/31
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.7.2...1.7.3
+
 ## 1.7.2 - 2025-04-28
 
 ### What's Changed
