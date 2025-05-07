@@ -150,7 +150,15 @@ class TraceArguments
         string $string,
         DateTime $dateTime
     ): Exception {
-        return new Exception('Some exception');
+        $ignoreArgsOriginalValue = ini_get('zend.exception_ignore_args');
+
+        ini_set('zend.exception_ignore_args', false);
+
+        $exception = new Exception('Some exception');
+
+        ini_set('zend.exception_ignore_args', $ignoreArgsOriginalValue);
+
+        return $exception;
     }
 
     protected function getTraceFrames(): array
