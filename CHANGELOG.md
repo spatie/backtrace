@@ -2,6 +2,18 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.7.4 - 2025-05-08
+
+### What's Changed
+
+* Fix `getCodeSnippetProvider` when `file` is not in `open_basedir` by @tadhgboyle in https://github.com/spatie/backtrace/pull/32
+
+### New Contributors
+
+* @tadhgboyle made their first contribution in https://github.com/spatie/backtrace/pull/32
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.7.3...1.7.4
+
 ## 1.7.3 - 2025-05-07
 
 ### What's Changed
