@@ -2,6 +2,15 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.8.0 - 2025-08-25
+
+### What's Changed
+
+- Laravel's `artisan` file is now considered a vendor file, even though it's typically found in the application's root directory
+- Statamic's `please` file is now considered a vendor file, even though it's typically found in the application's root directory
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.7.4...1.8.0
+
 ## 1.7.4 - 2025-05-08
 
 ### What's Changed
