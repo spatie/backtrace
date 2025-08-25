@@ -426,6 +426,7 @@ EOT,
     public function it_handles_laravels_artisan_file_as_a_vendor_frame()
     {
         $throwable = null;
+
         try {
             require __DIR__ . '/TestClasses/artisan';
         } catch (\Exception $e) {
