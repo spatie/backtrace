@@ -423,6 +423,33 @@ EOT,
     }
 
     /** @test */
+    public function it_handles_laravels_artisan_file_as_a_vendor_frame()
+    {
+        $throwable = null;
+        try {
+            require __DIR__ . '/TestClasses/artisan';
+        } catch (\Exception $e) {
+            $throwable = $e;
+        }
+
+        $this->assertNotNull($throwable);
+
+        $frames = Backtrace::createForThrowable($throwable)->frames();
+
+        // Loop over frames and find the frame with the artisan file
+        // It should be marked as a non-application frame
+        $found = false;
+        foreach ($frames as $frame) {
+            if (strpos($frame->file, 'artisan') !== false) {
+                $found = true;
+
+                $this->assertFalse($frame->applicationFrame);
+            }
+        }
+        $this->assertTrue($found, 'Did not find the artisan frame');
+    }
+
+    /** @test */
     public function it_can_get_the_index_of_the_first_application_frame()
     {
         $this->assertEquals(0, Backtrace::create()->firstApplicationFrameIndex());

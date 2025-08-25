@@ -258,6 +258,11 @@ class Backtrace
             return false;
         }
 
+        // Edge case for vendor files that typically live in the app code (e.g. Laravel's `artisan` or Statamic's `please`)
+        if (preg_match('/\/(artisan|please)$/', $relativeFile)) {
+            return false;
+        }
+
         return true;
     }
 

@@ -1,0 +1,11 @@
+<?php
+
+// This is a fake Artisan file that pretends to be Laravel's Artisan command-line entrypoint.
+
+// This frame should be a marked as a vendor frame!
+
+// We'll throw an exception to see how it's handled.
+
+// throw new Exception("This is a test exception from the fake Artisan file.");
+
+\Spatie\Backtrace\Tests\TestClasses\LaravelSerializableClosureCallThrow::throw();
