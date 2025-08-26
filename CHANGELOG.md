@@ -2,6 +2,12 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.8.1 - 2025-08-26
+
+- Bugfix: top frame should also be marked as vendor/application frame
+
+**Full Changelog**: https://github.com/spatie/backtrace/compare/1.8.0...1.8.1
+
 ## 1.8.0 - 2025-08-25
 
 ### What's Changed
