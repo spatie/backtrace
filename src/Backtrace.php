@@ -233,7 +233,10 @@ class Backtrace
             $currentFile,
             $currentLine,
             [],
-            '[top]'
+            '[top]',
+            null,
+            null,
+            $this->isApplicationFrame($currentFile),
         );
 
         $frames = $this->removeBacktracePackageFrames($frames);
