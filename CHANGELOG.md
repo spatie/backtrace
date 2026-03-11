@@ -2,6 +2,10 @@
 
 All notable changes to `backtrace` will be documented in this file
 
+## 1.8.2 - 2026-03-11
+
+- Fix an issue where the file path of a frame could be a directory, crashing the package
+
 ## 1.8.1 - 2025-08-26
 
 - Bugfix: top frame should also be marked as vendor/application frame
